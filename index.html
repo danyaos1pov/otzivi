@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CyberBlue Pro | Optimized</title>
+    <title>CyberBlue Pro | Stars Update</title>
     <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700&family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
@@ -17,23 +17,17 @@
             --text: #ffffff;
             --text-dim: #8b949e;
             --glass-border: rgba(0, 210, 255, 0.15);
+            --star-color: #fbbf24;
         }
 
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        * { 
-            margin: 0; padding: 0; box-sizing: border-box; 
-            -webkit-tap-highlight-color: transparent; /* Убирает синий квадрат при нажатии на мобилках */
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
         body { 
-            background: var(--bg); 
-            color: var(--text); 
-            font-family: 'Inter', sans-serif; 
-            min-height: 100vh; 
-            padding-bottom: 120px; 
-            overflow-x: hidden;
+            background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; 
+            min-height: 100vh; padding-bottom: 120px; overflow-x: hidden;
             animation: fadeIn 0.5s ease-out;
         }
         
@@ -55,44 +49,27 @@
             animation: slideUp 0.4s ease-out both;
         }
         
-        .stars-row { color: #fbbf24; margin-bottom: 10px; font-size: 0.9rem; }
+        /* ЗВЕЗДЫ В СПИСКЕ */
+        .stars-row { color: var(--star-color); margin-bottom: 12px; font-size: 1.1rem; letter-spacing: 2px; text-shadow: 0 0 10px rgba(251, 191, 36, 0.2); }
         .review-text { font-size: 1rem; line-height: 1.5; color: #cbd5e1; margin-bottom: 15px; word-wrap: break-word; }
 
         .user-meta { display: flex; align-items: center; gap: 12px; }
         .avatar { width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, #00d2ff, #3a7bd5); display: grid; place-items: center; font-family: 'Unbounded'; font-weight: 700; font-size: 0.7rem; color: #000; }
         .username { font-weight: 700; color: #fff; font-size: 0.9rem; }
 
-        .admin-reply { margin-top: 15px; padding: 15px; background: rgba(255, 77, 77, 0.05); border-left: 3px solid var(--admin-red); border-radius: 0 15px 15px 0; }
-        .admin-tag { font-family: 'Unbounded'; font-size: 0.55rem; color: var(--admin-red); text-transform: uppercase; margin-bottom: 5px; display: block; font-weight: 700; }
-        .admin-text { font-size: 0.9rem; color: #cbd5e1; line-height: 1.4; }
-
-        /* УВЕДОМЛЕНИЯ: ПРАВКА 2 (Статичные и фиксированные) */
         .toast { 
-            position: fixed; 
-            top: 20px; /* Фиксированное расстояние сверху */
-            left: 50%; 
-            transform: translateX(-50%); 
-            padding: 16px 30px; 
-            border-radius: 50px;
-            font-weight: 500; 
-            font-size: 0.9rem; 
-            z-index: 9999; 
-            display: none; /* Скрыто по умолчанию */
-            justify-content: center; 
-            align-items: center; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            white-space: nowrap;
-            min-width: 250px;
-            pointer-events: none;
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%); 
+            padding: 16px 30px; border-radius: 50px; font-weight: 500; font-size: 0.9rem; 
+            z-index: 9999; display: none; justify-content: center; align-items: center; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); white-space: nowrap; min-width: 250px; pointer-events: none;
         }
         .toast.show { display: flex; animation: fadeIn 0.3s; }
         .toast.error { background: var(--admin-red); color: white; }
         .toast.success { background: var(--success-green); color: white; }
 
-        /* КНОПКИ: ПРАВКА 1 (Черный текст) */
         .fab { 
             position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); 
-            background: var(--accent); color: #000 !important; /* Принудительно черный */
+            background: var(--accent); color: #000 !important;
             padding: 18px 36px; border-radius: 100px; border: none; 
             font-family: 'Unbounded'; font-weight: 400; font-size: 0.8rem; 
             cursor: pointer; box-shadow: 0 10px 30px rgba(0, 210, 255, 0.3); 
@@ -102,23 +79,29 @@
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); display: none; justify-content: center; align-items: center; z-index: 1000; backdrop-filter: blur(10px); padding: 20px; }
         .modal { background: #0d1117; width: 100%; max-width: 400px; padding: 30px; border-radius: 35px; border: 1px solid var(--glass-border); }
         
-        /* ПРАВКА 3 (Оптимизация нажатий) */
-        .star-picker { display: flex; gap: 10px; margin-bottom: 25px; justify-content: center; touch-action: manipulation; }
-        .star-picker span { font-size: 2.5rem; cursor: pointer; color: #1e293b; transition: 0.1s; padding: 5px; }
-        .star-picker span.active { color: var(--accent); }
+        /* ОБНОВЛЕННЫЙ ВЫБОР ЗВЕЗД */
+        .star-selection-area { text-align: center; margin-bottom: 25px; }
+        .rating-num { font-family: 'Unbounded'; font-size: 1.2rem; color: var(--accent); margin-bottom: 10px; display: block; }
+        .star-picker { display: flex; gap: 5px; justify-content: center; touch-action: manipulation; }
+        .star-picker span { 
+            font-size: 2.8rem; /* Увеличен размер */
+            cursor: pointer; 
+            color: #1e293b; 
+            transition: 0.15s cubic-bezier(0.4, 0, 0.2, 1); 
+            padding: 0 5px; /* Расширена зона нажатия */
+        }
+        .star-picker span.active { color: var(--star-color); text-shadow: 0 0 15px rgba(251, 191, 36, 0.4); transform: scale(1.1); }
 
         input, textarea { 
             width: 100%; background: #161b22; border: 1px solid #30363d; 
             padding: 16px; border-radius: 15px; color: #fff; 
-            margin-bottom: 15px; outline: none; font-family: 'Inter'; font-size: 16px; /* 16px предотвращает зум на iPhone */
+            margin-bottom: 15px; outline: none; font-family: 'Inter'; font-size: 16px;
         }
         
         .submit-btn { 
             width: 100%; padding: 18px; border-radius: 15px; 
-            background: var(--accent); border: none; 
-            color: #000 !important; /* Принудительно черный */
-            font-family: 'Unbounded'; font-weight: 400; 
-            cursor: pointer; touch-action: manipulation;
+            background: var(--accent); border: none; color: #000 !important;
+            font-family: 'Unbounded'; font-weight: 400; cursor: pointer; touch-action: manipulation;
         }
     </style>
 </head>
@@ -129,7 +112,7 @@
 
     <div class="container">
         <header class="hero">
-            <h1>ON1X VPN <span>Отзывы</span></h1>
+            <h1>ON1X VPN<span> Отзывы</span></h1>
         </header>
         <div class="stats-container">
             <div class="stat-card"><h2 id="avgRating">0.0</h2><p>Рейтинг</p></div>
@@ -142,10 +125,15 @@
 
     <div class="modal-overlay" id="overlay">
         <div class="modal">
-            <h2 style="font-family: 'Unbounded'; text-align: center; margin-bottom: 25px; font-size: 1rem; font-weight: 400;">НОВЫЙ ОТЗЫВ</h2>
-            <div class="star-picker" id="starPicker">
-                <span data-v="1">★</span><span data-v="2">★</span><span data-v="3">★</span><span data-v="4">★</span><span data-v="5">★</span>
+            <h2 style="font-family: 'Unbounded'; text-align: center; margin-bottom: 15px; font-size: 1rem; font-weight: 400;">ВАША ОЦЕНКА</h2>
+            
+            <div class="star-selection-area">
+                <span class="rating-num" id="ratingDisplay">5 / 5</span>
+                <div class="star-picker" id="starPicker">
+                    <span data-v="1">★</span><span data-v="2">★</span><span data-v="3">★</span><span data-v="4">★</span><span data-v="5">★</span>
+                </div>
             </div>
+
             <input type="text" id="nameInp" placeholder="Ваше имя" autocomplete="off">
             <textarea id="msgInp" rows="4" placeholder="Ваш отзыв..."></textarea>
             <button class="submit-btn" id="saveBtn">Опубликовать</button>
@@ -160,6 +148,7 @@
         const grid = document.getElementById('grid');
         const overlay = document.getElementById('overlay');
         const toast = document.getElementById('toast');
+        const ratingDisplay = document.getElementById('ratingDisplay');
         let currentStars = 5;
 
         function showNotification(text, type) {
@@ -168,14 +157,8 @@
             setTimeout(() => { toast.classList.remove('show'); }, 3000);
         }
 
-        // Обработка клика без задержки
-        document.getElementById('addBtn').addEventListener('pointerdown', () => {
-            overlay.style.display = 'flex';
-        });
-
-        overlay.addEventListener('pointerdown', (e) => {
-            if(e.target === overlay) overlay.style.display = 'none';
-        });
+        document.getElementById('addBtn').addEventListener('pointerdown', () => { overlay.style.display = 'flex'; });
+        overlay.addEventListener('pointerdown', (e) => { if(e.target === overlay) overlay.style.display = 'none'; });
 
         const pickerStars = document.querySelectorAll('#starPicker span');
         pickerStars.forEach(s => {
@@ -188,6 +171,7 @@
 
         function updatePicker() {
             pickerStars.forEach(s => s.classList.toggle('active', s.dataset.v <= currentStars));
+            ratingDisplay.innerText = `${currentStars} / 5`;
         }
         updatePicker();
 
@@ -209,7 +193,6 @@
                         <div class="avatar">${r.name ? r.name[0].toUpperCase() : '?'}</div>
                         <div class="username">${r.name}</div>
                     </div>
-                    ${r.admin ? `<div class="admin-reply"><span class="admin-tag">Админ</span><div class="admin-text">${r.admin}</div></div>` : ''}
                 </div>
             `).join('');
             updateStats(data);
@@ -225,14 +208,9 @@
         document.getElementById('saveBtn').addEventListener('pointerdown', async () => {
             const name = document.getElementById('nameInp').value.trim();
             const msg = document.getElementById('msgInp').value.trim();
-
-            if(!name || !msg) {
-                showNotification("Заполните все поля", "error");
-                return;
-            }
+            if(!name || !msg) { showNotification("Заполните все поля", "error"); return; }
 
             const { error } = await supabaseClient.from('reviews').insert([{ name, msg, stars: currentStars, proverka: 0 }]);
-            
             if (!error) {
                 overlay.style.display = 'none';
                 document.getElementById('nameInp').value = '';
