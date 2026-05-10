@@ -3,185 +3,271 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DANGO</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>CyberBlue Pro | Modern UI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700&family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         :root {
-            --bg: #f0f2f5;
-            --card: #ffffff;
-            --text: #1d1d1f;
-            --sub-text: #6e6e73;
-            --shadow: rgba(0, 0, 0, 0.05);
-            --accent: #0071e3;
+            --bg: #05070a;
+            --card-bg: #0d1117;
+            --accent: #00d2ff;
+            --accent-glow: #3a7bd5;
+            --admin-red: #ff4d4d;
+            --success-green: #2ecc71;
+            --text: #ffffff;
+            --text-dim: #8b949e;
+            --glass-border: rgba(0, 210, 255, 0.15);
         }
 
-        [data-theme="dark"] {
-            --bg: #000000;
-            --card: #1c1c1e;
-            --text: #f5f5f7;
-            --sub-text: #86868b;
-            --shadow: rgba(255, 255, 255, 0.05);
+        /* Анимации */
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
-        body {
-            background-color: var(--bg);
-            color: var(--text);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-            transition: background-color 0.3s ease, color 0.3s ease;
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(0, 210, 255, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(0, 210, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 210, 255, 0); }
         }
 
-        .theme-toggle {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            background: var(--card);
-            border: 1px solid var(--sub-text);
-            color: var(--text);
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 4px 12px var(--shadow);
-            z-index: 1000;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background: var(--bg); 
+            color: var(--text); 
+            font-family: 'Inter', sans-serif; 
+            min-height: 100vh; 
+            padding-bottom: 120px; 
+            overflow-x: hidden;
+            animation: fadeIn 0.8s ease-out;
         }
+        
+        .mesh-gradient { position: fixed; inset: 0; background: radial-gradient(at 0% 0%, rgba(0, 210, 255, 0.12) 0, transparent 50%), radial-gradient(at 100% 100%, rgba(58, 123, 213, 0.1) 0, transparent 50%); z-index: -1; }
+        .container { max-width: 480px; margin: 0 auto; padding: 40px 20px; }
+        
+        .hero h1 { font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 2rem; text-transform: uppercase; letter-spacing: -1px; margin-bottom: 30px; text-align: center; }
+        .hero h1 span { background: linear-gradient(90deg, var(--accent), var(--accent-glow)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
-        .bento-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 16px;
-            max-width: 500px;
-            width: 100%;
+        .stats-container { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 40px; }
+        .stat-card { 
+            background: rgba(255, 255, 255, 0.02); 
+            border: 1px solid var(--glass-border); 
+            border-radius: 20px; padding: 20px; 
+            backdrop-filter: blur(10px); text-align: center;
+            animation: fadeIn 1s ease-out;
         }
+        .stat-card h2 { font-family: 'Unbounded'; font-size: 1.8rem; color: var(--accent); line-height: 1; margin-bottom: 5px; }
+        .stat-card p { text-transform: uppercase; font-size: 0.6rem; font-weight: 700; color: var(--text-dim); }
 
-        .grid-item {
-            background: var(--card);
-            border-radius: 24px;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-decoration: none;
-            color: var(--text);
-            transition: transform 0.3s ease, background-color 0.3s ease;
-            box-shadow: 0 4px 12px var(--shadow);
+        .reviews-grid { display: flex; flex-direction: column; gap: 20px; }
+        
+        .card { 
+            background: var(--card-bg); 
+            border: 1px solid var(--glass-border); 
+            padding: 30px; border-radius: 30px; 
+            position: relative; display: flex; 
+            flex-direction: column; height: auto; 
+            animation: slideUp 0.6s cubic-bezier(0.23, 1, 0.32, 1) both;
         }
+        
+        .card::before { content: "“"; position: absolute; top: -5px; right: 15px; font-family: 'Unbounded'; font-size: 6rem; color: var(--accent); opacity: 0.07; }
 
-        .grid-item:hover {
-            transform: scale(1.02);
+        .stars-row { color: #fbbf24; margin-bottom: 10px; font-size: 0.9rem; }
+        .review-text { font-size: 1rem; line-height: 1.5; color: #cbd5e1; margin-bottom: 15px; z-index: 1; word-wrap: break-word; }
+
+        .user-meta { display: flex; align-items: center; gap: 12px; margin-top: 5px; }
+        .avatar { width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, #00d2ff, #3a7bd5); display: grid; place-items: center; font-family: 'Unbounded'; font-weight: 700; font-size: 0.7rem; color: #000; flex-shrink: 0; }
+        .username { font-weight: 700; color: #fff; font-size: 0.9rem; }
+
+        .admin-reply { margin-top: 15px; padding: 15px; background: rgba(255, 77, 77, 0.05); border-left: 3px solid var(--admin-red); border-radius: 0 15px 15px 0; }
+        .admin-tag { font-family: 'Unbounded'; font-size: 0.55rem; color: var(--admin-red); text-transform: uppercase; margin-bottom: 5px; display: block; font-weight: 700; }
+        .admin-text { font-size: 0.9rem; color: #cbd5e1; line-height: 1.4; word-wrap: break-word; }
+
+        /* TOASTS: ПРАВКА 1 и 2 */
+        .toast { 
+            position: fixed; 
+            top: -100px; 
+            left: 50%; 
+            transform: translateX(-50%); 
+            padding: 16px 30px; 
+            border-radius: 50px; /* Одинаковая закругленная форма */
+            font-family: 'Inter', sans-serif; 
+            font-weight: 500; 
+            font-size: 0.9rem; 
+            z-index: 2000; 
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4); 
+            white-space: nowrap; /* Всегда в одну строку */
+            min-width: 280px;
+            text-align: center;
         }
+        .toast.show { top: 30px; }
+        .toast.error { background: var(--admin-red); color: white; }
+        .toast.success { background: var(--success-green); color: white; }
 
-        .profile {
-            grid-column: span 4;
-            flex-direction: row;
-            justify-content: flex-start;
-            gap: 20px;
+        /* КНОПКИ: ПРАВКА 4 (Убрана жирность) */
+        .fab { 
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); 
+            background: var(--accent); color: #000; 
+            padding: 16px 32px; border-radius: 100px; border: none; 
+            font-family: 'Unbounded'; font-weight: 400; /* Не жирный */
+            font-size: 0.8rem; cursor: pointer; 
+            box-shadow: 0 10px 30px rgba(0, 210, 255, 0.3); z-index: 100; 
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
+        .fab:active { transform: translateX(-50%) scale(0.95); }
 
-        .profile img {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background: #eee;
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 1000; backdrop-filter: blur(8px); padding: 20px; animation: fadeIn 0.3s; }
+        .modal { background: #0d1117; width: 100%; max-width: 400px; padding: 35px; border-radius: 35px; border: 1px solid var(--glass-border); position: relative; }
+        
+        .star-picker { display: flex; gap: 8px; margin-bottom: 25px; justify-content: center; }
+        .star-picker span { font-size: 2.2rem; cursor: pointer; color: #1e293b; transition: 0.2s; }
+        .star-picker span.active { color: var(--accent); transform: scale(1.1); }
+
+        input, textarea { width: 100%; background: #161b22; border: 1px solid #30363d; padding: 18px; border-radius: 15px; color: #fff; margin-bottom: 15px; outline: none; font-family: 'Inter'; font-size: 0.95rem; }
+        
+        .submit-btn { 
+            width: 100%; padding: 18px; border-radius: 15px; 
+            background: var(--accent); border: none; 
+            font-family: 'Unbounded'; font-weight: 400; /* Не жирный */
+            cursor: pointer; transition: 0.3s;
         }
-
-        .profile-info h1 { font-size: 1.4rem; }
-        .profile-info p { color: var(--sub-text); font-size: 0.9rem; }
-
-        .time-card {
-            grid-column: span 2;
-            background: #1d1d1f;
-            color: white;
-        }
-        [data-theme="dark"] .time-card { background: #2c2c2e; }
-
-        #clock { font-size: 1.5rem; font-weight: 700; }
-
-        .social { grid-column: span 2; }
-        .social i { font-size: 2rem; margin-bottom: 8px; }
-        .social span { font-weight: 600; font-size: 0.9rem; }
-
-        .vk i { color: #0077ff; }
-        .tg i { color: #24A1DE; }
-        .inst i { color: #E1306C; }
-
-        @media (max-width: 400px) {
-            .bento-grid { grid-template-columns: repeat(2, 1fr); }
-            .profile { grid-column: span 2; flex-direction: column; text-align: center; }
-        }
+        .submit-btn:hover { background: #00bce6; }
     </style>
 </head>
-<body data-theme="light">
+<body>
 
-    <button class="theme-toggle" id="mode-switcher">
-        <i class="fas fa-moon"></i>
-    </button>
+    <div id="toast" class="toast"></div>
+    <div class="mesh-gradient"></div>
 
-    <div class="bento-grid">
-        <div class="grid-item profile">
-            <img src="https://sun9-44.userapi.com/s/v1/ig2/8Ct7BACjAw-gUd2g6PiOcanN27XiW-CzwC269QGttYPC2kMxVfQgu_gZQj5Wp7ODQgq3FKTlzKTumzpDtml2s8gl.jpg?quality=96&as=32x36,48x53,72x80,108x120,160x178,240x267,360x400,480x533,540x600,640x711,720x800,972x1080&from=bu&cs=972x0" alt="Avatar">
-            <div class="profile-info">
-                <h1>Данил</h1>
-                <p>Я слежу за тобой</p>
+    <div class="container">
+        <header class="hero">
+            <h1>ON1X VPN<span> Отзывы</span></h1>
+        </header>
+
+        <div class="stats-container">
+            <div class="stat-card" style="animation-delay: 0.1s;"><h2 id="avgRating">0.0</h2><p>Рейтинг</p></div>
+            <div class="stat-card" style="animation-delay: 0.2s;"><h2 id="totalCount">0</h2><p>Отзывов</p></div>
+        </div>
+
+        <div class="reviews-grid" id="grid"></div>
+    </div>
+
+    <button class="fab" id="addBtn">Оставить отзыв</button>
+
+    <div class="modal-overlay" id="overlay">
+        <div class="modal">
+            <h2 style="font-family: 'Unbounded'; text-align: center; margin-bottom: 25px; font-size: 1.1rem; font-weight: 400;">НОВЫЙ ОТЗЫВ</h2>
+            <div class="star-picker" id="starPicker">
+                <span data-v="1">★</span><span data-v="2">★</span><span data-v="3">★</span><span data-v="4">★</span><span data-v="5">★</span>
             </div>
+            <input type="text" id="nameInp" placeholder="Ваше имя">
+            <textarea id="msgInp" rows="5" placeholder="Напишите ваше мнение..."></textarea>
+            <button class="submit-btn" id="saveBtn">Опубликовать</button>
         </div>
-
-        <div class="grid-item time-card">
-            <span style="font-size: 0.7rem; text-transform: uppercase; margin-bottom: 5px; opacity: 0.7;">Local Time</span>
-            <div id="clock">00:00:00</div>
-        </div>
-
-        <a href="https://vk.com/danyaos1pov" class="grid-item social vk" target="_blank">
-            <i class="fab fa-vk"></i>
-            <span>ВКонтакте</span>
-        </a>
-
-        <a href="https://t.me/danyaos1pov" class="grid-item social tg" target="_blank">
-            <i class="fab fa-telegram"></i>
-            <span>Telegram</span>
-        </a>
-
-        <a href="https://www.instagram.com/danyaos1pov/" class="grid-item social inst" target="_blank">
-            <i class="fab fa-instagram"></i>
-            <span>Instagram</span>
-        </a>
     </div>
 
     <script>
-        const btn = document.getElementById('mode-switcher');
-        const icon = btn.querySelector('i');
-        
-        btn.addEventListener('click', () => {
-            const currentTheme = document.body.getAttribute('data-theme');
-            if (currentTheme === 'light') {
-                document.body.setAttribute('data-theme', 'dark');
-                icon.classList.replace('fa-moon', 'fa-sun');
-            } else {
-                document.body.setAttribute('data-theme', 'light');
-                icon.classList.replace('fa-sun', 'fa-moon');
-            }
+        const SB_URL = 'https://yvnnngfzzjdbeiscwluy.supabase.co'; 
+        const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl2bm5uZ2Z6empkYmVpc2N3bHV5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0NzY2ODYsImV4cCI6MjA5MDA1MjY4Nn0.SesGG2QhbJKfAklZDiL8oolWQ6qaTtBwRL_tvigpd9A';
+        const supabaseClient = supabase.createClient(SB_URL, SB_KEY);
+
+        const grid = document.getElementById('grid');
+        const overlay = document.getElementById('overlay');
+        const toast = document.getElementById('toast');
+        let currentStars = 5;
+
+        function showNotification(text, type) {
+            toast.textContent = text;
+            toast.className = `toast show ${type}`;
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        document.getElementById('addBtn').onclick = () => overlay.style.display = 'flex';
+        overlay.onclick = (e) => { if(e.target === overlay) overlay.style.display = 'none'; }
+
+        const pickerStars = document.querySelectorAll('#starPicker span');
+        pickerStars.forEach(s => {
+            s.onclick = () => { currentStars = parseInt(s.dataset.v); updatePicker(); }
         });
 
-        function updateClock() {
-            const now = new Date();
-            document.getElementById('clock').textContent = now.toLocaleTimeString('ru-RU');
+        function updatePicker() {
+            pickerStars.forEach(s => s.classList.toggle('active', s.dataset.v <= currentStars));
         }
-        setInterval(updateClock, 1000);
-        updateClock();
+        updatePicker();
+
+        async function fetchReviews() {
+            let { data: reviews, error } = await supabaseClient
+                .from('reviews')
+                .select('*')
+                .in('proverka', [1, 2]) 
+                .order('created_at', { ascending: false });
+            if (!error) render(reviews);
+        }
+
+        function render(data) {
+            grid.innerHTML = data.map((r, index) => `
+                <div class="card" style="animation-delay: ${index * 0.1}s">
+                    <div class="stars-row">${'★'.repeat(r.stars)}${'☆'.repeat(5-r.stars)}</div>
+                    <p class="review-text">${r.msg}</p>
+                    <div class="user-meta">
+                        <div class="avatar">${r.name ? r.name[0].toUpperCase() : '?'}</div>
+                        <div class="username">${r.name}</div>
+                    </div>
+                    ${r.admin ? `
+                        <div class="admin-reply">
+                            <span class="admin-tag">Ответ администратора</span>
+                            <div class="admin-text">${r.admin}</div>
+                        </div>
+                    ` : ''}
+                </div>
+            `).join('');
+
+            updateStats(data);
+        }
+
+        function updateStats(data) {
+            const totalDisplay = data.length;
+            const ratingReviews = data.filter(r => r.proverka === 1);
+            const totalRatingCount = ratingReviews.length;
+            const average = totalRatingCount > 0 
+                ? (ratingReviews.reduce((sum, r) => sum + r.stars, 0) / totalRatingCount).toFixed(1) 
+                : "0.0";
+
+            document.getElementById('avgRating').innerText = average;
+            document.getElementById('totalCount').innerText = totalDisplay;
+        }
+
+        document.getElementById('saveBtn').onclick = async () => {
+            const name = document.getElementById('nameInp').value.trim();
+            const msg = document.getElementById('msgInp').value.trim();
+
+            if(!name || !msg) {
+                showNotification("Заполните все поля", "error");
+                return;
+            }
+
+            const { error } = await supabaseClient.from('reviews').insert([{ name, msg, stars: currentStars, proverka: 0 }]);
+            
+            if (!error) {
+                overlay.style.display = 'none';
+                document.getElementById('nameInp').value = '';
+                document.getElementById('msgInp').value = '';
+                showNotification("Отправлено на модерацию", "success");
+            } else {
+                showNotification("Ошибка отправки", "error");
+            }
+        };
+
+        fetchReviews();
     </script>
 </body>
 </html>
