@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CyberBlue Pro | Stars Update</title>
+    <title>CyberBlue Pro | Final Fix</title>
     <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700&family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
@@ -23,7 +23,10 @@
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        * { 
+            margin: 0; padding: 0; box-sizing: border-box; 
+            -webkit-tap-highlight-color: transparent; 
+        }
         
         body { 
             background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; 
@@ -43,20 +46,44 @@
         .stat-card p { text-transform: uppercase; font-size: 0.6rem; font-weight: 700; color: var(--text-dim); }
 
         .reviews-grid { display: flex; flex-direction: column; gap: 20px; }
+        
+        /* КАРТОЧКА С КОВЫЧКОЙ */
         .card { 
             background: var(--card-bg); border: 1px solid var(--glass-border); 
             padding: 30px; border-radius: 30px; position: relative; 
             animation: slideUp 0.4s ease-out both;
+            overflow: hidden; /* Чтобы ковычка не вылезала */
         }
         
-        /* ЗВЕЗДЫ В СПИСКЕ */
-        .stars-row { color: var(--star-color); margin-bottom: 12px; font-size: 1.1rem; letter-spacing: 2px; text-shadow: 0 0 10px rgba(251, 191, 36, 0.2); }
-        .review-text { font-size: 1rem; line-height: 1.5; color: #cbd5e1; margin-bottom: 15px; word-wrap: break-word; }
+        .card::before { 
+            content: "“"; 
+            position: absolute; 
+            top: -10px; 
+            right: 15px; 
+            font-family: 'Unbounded'; 
+            font-size: 7rem; 
+            color: var(--accent); 
+            opacity: 0.1; 
+            line-height: 1;
+            pointer-events: none;
+        }
+        
+        .stars-row { color: var(--star-color); margin-bottom: 12px; font-size: 1.1rem; letter-spacing: 2px; position: relative; z-index: 1; }
+        .review-text { font-size: 1rem; line-height: 1.5; color: #cbd5e1; margin-bottom: 15px; word-wrap: break-word; position: relative; z-index: 1; }
 
-        .user-meta { display: flex; align-items: center; gap: 12px; }
+        .read-more-btn {
+            background: none; border: none; color: var(--accent);
+            font-family: 'Inter', sans-serif; font-size: 0.9rem;
+            cursor: pointer; padding: 0; margin-top: -10px; margin-bottom: 15px;
+            display: block; text-decoration: underline; touch-action: manipulation;
+            position: relative; z-index: 2;
+        }
+
+        .user-meta { display: flex; align-items: center; gap: 12px; position: relative; z-index: 1; }
         .avatar { width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, #00d2ff, #3a7bd5); display: grid; place-items: center; font-family: 'Unbounded'; font-weight: 700; font-size: 0.7rem; color: #000; }
         .username { font-weight: 700; color: #fff; font-size: 0.9rem; }
 
+        /* TOASTS */
         .toast { 
             position: fixed; top: 20px; left: 50%; transform: translateX(-50%); 
             padding: 16px 30px; border-radius: 50px; font-weight: 500; font-size: 0.9rem; 
@@ -67,6 +94,7 @@
         .toast.error { background: var(--admin-red); color: white; }
         .toast.success { background: var(--success-green); color: white; }
 
+        /* КНОПКИ */
         .fab { 
             position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); 
             background: var(--accent); color: #000 !important;
@@ -79,18 +107,11 @@
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); display: none; justify-content: center; align-items: center; z-index: 1000; backdrop-filter: blur(10px); padding: 20px; }
         .modal { background: #0d1117; width: 100%; max-width: 400px; padding: 30px; border-radius: 35px; border: 1px solid var(--glass-border); }
         
-        /* ОБНОВЛЕННЫЙ ВЫБОР ЗВЕЗД */
         .star-selection-area { text-align: center; margin-bottom: 25px; }
         .rating-num { font-family: 'Unbounded'; font-size: 1.2rem; color: var(--accent); margin-bottom: 10px; display: block; }
         .star-picker { display: flex; gap: 5px; justify-content: center; touch-action: manipulation; }
-        .star-picker span { 
-            font-size: 2.8rem; /* Увеличен размер */
-            cursor: pointer; 
-            color: #1e293b; 
-            transition: 0.15s cubic-bezier(0.4, 0, 0.2, 1); 
-            padding: 0 5px; /* Расширена зона нажатия */
-        }
-        .star-picker span.active { color: var(--star-color); text-shadow: 0 0 15px rgba(251, 191, 36, 0.4); transform: scale(1.1); }
+        .star-picker span { font-size: 2.8rem; cursor: pointer; color: #1e293b; transition: 0.15s; padding: 0 5px; }
+        .star-picker span.active { color: var(--star-color); transform: scale(1.1); }
 
         input, textarea { 
             width: 100%; background: #161b22; border: 1px solid #30363d; 
@@ -125,17 +146,15 @@
 
     <div class="modal-overlay" id="overlay">
         <div class="modal">
-            <h2 style="font-family: 'Unbounded'; text-align: center; margin-bottom: 15px; font-size: 1rem; font-weight: 400;">ВАША ОЦЕНКА</h2>
-            
+            <h2 style="font-family: 'Unbounded'; text-align: center; margin-bottom: 15px; font-size: 1rem; font-weight: 400; color: #fff;">ВАША ОЦЕНКА</h2>
             <div class="star-selection-area">
                 <span class="rating-num" id="ratingDisplay">5 / 5</span>
                 <div class="star-picker" id="starPicker">
                     <span data-v="1">★</span><span data-v="2">★</span><span data-v="3">★</span><span data-v="4">★</span><span data-v="5">★</span>
                 </div>
             </div>
-
             <input type="text" id="nameInp" placeholder="Ваше имя" autocomplete="off">
-            <textarea id="msgInp" rows="4" placeholder="Ваш отзыв..."></textarea>
+            <textarea id="msgInp" rows="4" placeholder="Напишите вас отзыв"></textarea>
             <button class="submit-btn" id="saveBtn">Опубликовать</button>
         </div>
     </div>
@@ -156,6 +175,12 @@
             toast.className = `toast show ${type}`;
             setTimeout(() => { toast.classList.remove('show'); }, 3000);
         }
+
+        window.expandText = (btn, id) => {
+            const textEl = document.getElementById(`text-${id}`);
+            textEl.innerText = btn.getAttribute('data-full');
+            btn.remove();
+        };
 
         document.getElementById('addBtn').addEventListener('pointerdown', () => { overlay.style.display = 'flex'; });
         overlay.addEventListener('pointerdown', (e) => { if(e.target === overlay) overlay.style.display = 'none'; });
@@ -185,16 +210,21 @@
         }
 
         function render(data) {
-            grid.innerHTML = data.map((r, i) => `
+            grid.innerHTML = data.map((r, i) => {
+                const isLong = r.msg.length > 200;
+                const displayMsg = isLong ? r.msg.substring(0, 200) + '...' : r.msg;
+                
+                return `
                 <div class="card" style="animation-delay: ${i * 0.05}s">
                     <div class="stars-row">${'★'.repeat(r.stars)}${'☆'.repeat(5-r.stars)}</div>
-                    <p class="review-text">${r.msg}</p>
+                    <p class="review-text" id="text-${r.id}">${displayMsg}</p>
+                    ${isLong ? `<button class="read-more-btn" data-full="${r.msg.replace(/"/g, '&quot;')}" onclick="expandText(this, '${r.id}')">Читать полностью</button>` : ''}
                     <div class="user-meta">
                         <div class="avatar">${r.name ? r.name[0].toUpperCase() : '?'}</div>
                         <div class="username">${r.name}</div>
                     </div>
-                </div>
-            `).join('');
+                </div>`;
+            }).join('');
             updateStats(data);
         }
 
