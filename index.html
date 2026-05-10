@@ -2,8 +2,8 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CyberBlue Pro | Modern UI</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CyberBlue Pro | Optimized</title>
     <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700&family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
@@ -19,24 +19,14 @@
             --glass-border: rgba(0, 210, 255, 0.15);
         }
 
-        /* Анимации */
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        * { 
+            margin: 0; padding: 0; box-sizing: border-box; 
+            -webkit-tap-highlight-color: transparent; /* Убирает синий квадрат при нажатии на мобилках */
         }
-
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(0, 210, 255, 0.4); }
-            70% { box-shadow: 0 0 0 15px rgba(0, 210, 255, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(0, 210, 255, 0); }
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         body { 
             background: var(--bg); 
             color: var(--text); 
@@ -44,103 +34,92 @@
             min-height: 100vh; 
             padding-bottom: 120px; 
             overflow-x: hidden;
-            animation: fadeIn 0.8s ease-out;
+            animation: fadeIn 0.5s ease-out;
         }
         
         .mesh-gradient { position: fixed; inset: 0; background: radial-gradient(at 0% 0%, rgba(0, 210, 255, 0.12) 0, transparent 50%), radial-gradient(at 100% 100%, rgba(58, 123, 213, 0.1) 0, transparent 50%); z-index: -1; }
         .container { max-width: 480px; margin: 0 auto; padding: 40px 20px; }
         
-        .hero h1 { font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 2rem; text-transform: uppercase; letter-spacing: -1px; margin-bottom: 30px; text-align: center; }
+        .hero h1 { font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 2rem; text-transform: uppercase; margin-bottom: 30px; text-align: center; }
         .hero h1 span { background: linear-gradient(90deg, var(--accent), var(--accent-glow)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
         .stats-container { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 40px; }
-        .stat-card { 
-            background: rgba(255, 255, 255, 0.02); 
-            border: 1px solid var(--glass-border); 
-            border-radius: 20px; padding: 20px; 
-            backdrop-filter: blur(10px); text-align: center;
-            animation: fadeIn 1s ease-out;
-        }
+        .stat-card { background: rgba(255, 255, 255, 0.02); border: 1px solid var(--glass-border); border-radius: 20px; padding: 20px; text-align: center; }
         .stat-card h2 { font-family: 'Unbounded'; font-size: 1.8rem; color: var(--accent); line-height: 1; margin-bottom: 5px; }
         .stat-card p { text-transform: uppercase; font-size: 0.6rem; font-weight: 700; color: var(--text-dim); }
 
         .reviews-grid { display: flex; flex-direction: column; gap: 20px; }
-        
         .card { 
-            background: var(--card-bg); 
-            border: 1px solid var(--glass-border); 
-            padding: 30px; border-radius: 30px; 
-            position: relative; display: flex; 
-            flex-direction: column; height: auto; 
-            animation: slideUp 0.6s cubic-bezier(0.23, 1, 0.32, 1) both;
+            background: var(--card-bg); border: 1px solid var(--glass-border); 
+            padding: 30px; border-radius: 30px; position: relative; 
+            animation: slideUp 0.4s ease-out both;
         }
         
-        .card::before { content: "“"; position: absolute; top: -5px; right: 15px; font-family: 'Unbounded'; font-size: 6rem; color: var(--accent); opacity: 0.07; }
-
         .stars-row { color: #fbbf24; margin-bottom: 10px; font-size: 0.9rem; }
-        .review-text { font-size: 1rem; line-height: 1.5; color: #cbd5e1; margin-bottom: 15px; z-index: 1; word-wrap: break-word; }
+        .review-text { font-size: 1rem; line-height: 1.5; color: #cbd5e1; margin-bottom: 15px; word-wrap: break-word; }
 
-        .user-meta { display: flex; align-items: center; gap: 12px; margin-top: 5px; }
-        .avatar { width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, #00d2ff, #3a7bd5); display: grid; place-items: center; font-family: 'Unbounded'; font-weight: 700; font-size: 0.7rem; color: #000; flex-shrink: 0; }
+        .user-meta { display: flex; align-items: center; gap: 12px; }
+        .avatar { width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, #00d2ff, #3a7bd5); display: grid; place-items: center; font-family: 'Unbounded'; font-weight: 700; font-size: 0.7rem; color: #000; }
         .username { font-weight: 700; color: #fff; font-size: 0.9rem; }
 
         .admin-reply { margin-top: 15px; padding: 15px; background: rgba(255, 77, 77, 0.05); border-left: 3px solid var(--admin-red); border-radius: 0 15px 15px 0; }
         .admin-tag { font-family: 'Unbounded'; font-size: 0.55rem; color: var(--admin-red); text-transform: uppercase; margin-bottom: 5px; display: block; font-weight: 700; }
-        .admin-text { font-size: 0.9rem; color: #cbd5e1; line-height: 1.4; word-wrap: break-word; }
+        .admin-text { font-size: 0.9rem; color: #cbd5e1; line-height: 1.4; }
 
-        /* TOASTS: ПРАВКА 1 и 2 */
+        /* УВЕДОМЛЕНИЯ: ПРАВКА 2 (Статичные и фиксированные) */
         .toast { 
             position: fixed; 
-            top: -100px; 
+            top: 20px; /* Фиксированное расстояние сверху */
             left: 50%; 
             transform: translateX(-50%); 
             padding: 16px 30px; 
-            border-radius: 50px; /* Одинаковая закругленная форма */
-            font-family: 'Inter', sans-serif; 
+            border-radius: 50px;
             font-weight: 500; 
             font-size: 0.9rem; 
-            z-index: 2000; 
-            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-            display: flex; 
+            z-index: 9999; 
+            display: none; /* Скрыто по умолчанию */
             justify-content: center; 
             align-items: center; 
-            box-shadow: 0 15px 35px rgba(0,0,0,0.4); 
-            white-space: nowrap; /* Всегда в одну строку */
-            min-width: 280px;
-            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            white-space: nowrap;
+            min-width: 250px;
+            pointer-events: none;
         }
-        .toast.show { top: 30px; }
+        .toast.show { display: flex; animation: fadeIn 0.3s; }
         .toast.error { background: var(--admin-red); color: white; }
         .toast.success { background: var(--success-green); color: white; }
 
-        /* КНОПКИ: ПРАВКА 4 (Убрана жирность) */
+        /* КНОПКИ: ПРАВКА 1 (Черный текст) */
         .fab { 
             position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); 
-            background: var(--accent); color: #000; 
-            padding: 16px 32px; border-radius: 100px; border: none; 
-            font-family: 'Unbounded'; font-weight: 400; /* Не жирный */
-            font-size: 0.8rem; cursor: pointer; 
-            box-shadow: 0 10px 30px rgba(0, 210, 255, 0.3); z-index: 100; 
-            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: var(--accent); color: #000 !important; /* Принудительно черный */
+            padding: 18px 36px; border-radius: 100px; border: none; 
+            font-family: 'Unbounded'; font-weight: 400; font-size: 0.8rem; 
+            cursor: pointer; box-shadow: 0 10px 30px rgba(0, 210, 255, 0.3); 
+            z-index: 100; touch-action: manipulation;
         }
-        .fab:active { transform: translateX(-50%) scale(0.95); }
 
-        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 1000; backdrop-filter: blur(8px); padding: 20px; animation: fadeIn 0.3s; }
-        .modal { background: #0d1117; width: 100%; max-width: 400px; padding: 35px; border-radius: 35px; border: 1px solid var(--glass-border); position: relative; }
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); display: none; justify-content: center; align-items: center; z-index: 1000; backdrop-filter: blur(10px); padding: 20px; }
+        .modal { background: #0d1117; width: 100%; max-width: 400px; padding: 30px; border-radius: 35px; border: 1px solid var(--glass-border); }
         
-        .star-picker { display: flex; gap: 8px; margin-bottom: 25px; justify-content: center; }
-        .star-picker span { font-size: 2.2rem; cursor: pointer; color: #1e293b; transition: 0.2s; }
-        .star-picker span.active { color: var(--accent); transform: scale(1.1); }
+        /* ПРАВКА 3 (Оптимизация нажатий) */
+        .star-picker { display: flex; gap: 10px; margin-bottom: 25px; justify-content: center; touch-action: manipulation; }
+        .star-picker span { font-size: 2.5rem; cursor: pointer; color: #1e293b; transition: 0.1s; padding: 5px; }
+        .star-picker span.active { color: var(--accent); }
 
-        input, textarea { width: 100%; background: #161b22; border: 1px solid #30363d; padding: 18px; border-radius: 15px; color: #fff; margin-bottom: 15px; outline: none; font-family: 'Inter'; font-size: 0.95rem; }
+        input, textarea { 
+            width: 100%; background: #161b22; border: 1px solid #30363d; 
+            padding: 16px; border-radius: 15px; color: #fff; 
+            margin-bottom: 15px; outline: none; font-family: 'Inter'; font-size: 16px; /* 16px предотвращает зум на iPhone */
+        }
         
         .submit-btn { 
             width: 100%; padding: 18px; border-radius: 15px; 
             background: var(--accent); border: none; 
-            font-family: 'Unbounded'; font-weight: 400; /* Не жирный */
-            cursor: pointer; transition: 0.3s;
+            color: #000 !important; /* Принудительно черный */
+            font-family: 'Unbounded'; font-weight: 400; 
+            cursor: pointer; touch-action: manipulation;
         }
-        .submit-btn:hover { background: #00bce6; }
     </style>
 </head>
 <body>
@@ -150,14 +129,12 @@
 
     <div class="container">
         <header class="hero">
-            <h1>ON1X VPN<span> Отзывы</span></h1>
+            <h1>ON1X VPN <span>Отзывы</span></h1>
         </header>
-
         <div class="stats-container">
-            <div class="stat-card" style="animation-delay: 0.1s;"><h2 id="avgRating">0.0</h2><p>Рейтинг</p></div>
-            <div class="stat-card" style="animation-delay: 0.2s;"><h2 id="totalCount">0</h2><p>Отзывов</p></div>
+            <div class="stat-card"><h2 id="avgRating">0.0</h2><p>Рейтинг</p></div>
+            <div class="stat-card"><h2 id="totalCount">0</h2><p>Отзывов</p></div>
         </div>
-
         <div class="reviews-grid" id="grid"></div>
     </div>
 
@@ -165,12 +142,12 @@
 
     <div class="modal-overlay" id="overlay">
         <div class="modal">
-            <h2 style="font-family: 'Unbounded'; text-align: center; margin-bottom: 25px; font-size: 1.1rem; font-weight: 400;">НОВЫЙ ОТЗЫВ</h2>
+            <h2 style="font-family: 'Unbounded'; text-align: center; margin-bottom: 25px; font-size: 1rem; font-weight: 400;">НОВЫЙ ОТЗЫВ</h2>
             <div class="star-picker" id="starPicker">
                 <span data-v="1">★</span><span data-v="2">★</span><span data-v="3">★</span><span data-v="4">★</span><span data-v="5">★</span>
             </div>
-            <input type="text" id="nameInp" placeholder="Ваше имя">
-            <textarea id="msgInp" rows="5" placeholder="Напишите ваше мнение..."></textarea>
+            <input type="text" id="nameInp" placeholder="Ваше имя" autocomplete="off">
+            <textarea id="msgInp" rows="4" placeholder="Ваш отзыв..."></textarea>
             <button class="submit-btn" id="saveBtn">Опубликовать</button>
         </div>
     </div>
@@ -188,15 +165,25 @@
         function showNotification(text, type) {
             toast.textContent = text;
             toast.className = `toast show ${type}`;
-            setTimeout(() => toast.classList.remove('show'), 3000);
+            setTimeout(() => { toast.classList.remove('show'); }, 3000);
         }
 
-        document.getElementById('addBtn').onclick = () => overlay.style.display = 'flex';
-        overlay.onclick = (e) => { if(e.target === overlay) overlay.style.display = 'none'; }
+        // Обработка клика без задержки
+        document.getElementById('addBtn').addEventListener('pointerdown', () => {
+            overlay.style.display = 'flex';
+        });
+
+        overlay.addEventListener('pointerdown', (e) => {
+            if(e.target === overlay) overlay.style.display = 'none';
+        });
 
         const pickerStars = document.querySelectorAll('#starPicker span');
         pickerStars.forEach(s => {
-            s.onclick = () => { currentStars = parseInt(s.dataset.v); updatePicker(); }
+            s.addEventListener('pointerdown', (e) => {
+                e.preventDefault();
+                currentStars = parseInt(s.dataset.v);
+                updatePicker();
+            });
         });
 
         function updatePicker() {
@@ -214,39 +201,28 @@
         }
 
         function render(data) {
-            grid.innerHTML = data.map((r, index) => `
-                <div class="card" style="animation-delay: ${index * 0.1}s">
+            grid.innerHTML = data.map((r, i) => `
+                <div class="card" style="animation-delay: ${i * 0.05}s">
                     <div class="stars-row">${'★'.repeat(r.stars)}${'☆'.repeat(5-r.stars)}</div>
                     <p class="review-text">${r.msg}</p>
                     <div class="user-meta">
                         <div class="avatar">${r.name ? r.name[0].toUpperCase() : '?'}</div>
                         <div class="username">${r.name}</div>
                     </div>
-                    ${r.admin ? `
-                        <div class="admin-reply">
-                            <span class="admin-tag">Ответ администратора</span>
-                            <div class="admin-text">${r.admin}</div>
-                        </div>
-                    ` : ''}
+                    ${r.admin ? `<div class="admin-reply"><span class="admin-tag">Админ</span><div class="admin-text">${r.admin}</div></div>` : ''}
                 </div>
             `).join('');
-
             updateStats(data);
         }
 
         function updateStats(data) {
-            const totalDisplay = data.length;
-            const ratingReviews = data.filter(r => r.proverka === 1);
-            const totalRatingCount = ratingReviews.length;
-            const average = totalRatingCount > 0 
-                ? (ratingReviews.reduce((sum, r) => sum + r.stars, 0) / totalRatingCount).toFixed(1) 
-                : "0.0";
-
-            document.getElementById('avgRating').innerText = average;
-            document.getElementById('totalCount').innerText = totalDisplay;
+            const rOnly = data.filter(r => r.proverka === 1);
+            const avg = rOnly.length > 0 ? (rOnly.reduce((s, r) => s + r.stars, 0) / rOnly.length).toFixed(1) : "0.0";
+            document.getElementById('avgRating').innerText = avg;
+            document.getElementById('totalCount').innerText = data.length;
         }
 
-        document.getElementById('saveBtn').onclick = async () => {
+        document.getElementById('saveBtn').addEventListener('pointerdown', async () => {
             const name = document.getElementById('nameInp').value.trim();
             const msg = document.getElementById('msgInp').value.trim();
 
@@ -263,9 +239,9 @@
                 document.getElementById('msgInp').value = '';
                 showNotification("Отправлено на модерацию", "success");
             } else {
-                showNotification("Ошибка отправки", "error");
+                showNotification("Ошибка сервера", "error");
             }
-        };
+        });
 
         fetchReviews();
     </script>
