@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ON1X VPN | Отзывы</title>
+    <title>CyberBlue | Ultimate Edition</title>
     <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700&family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
@@ -11,254 +11,294 @@
             --bg: #05070a;
             --card-bg: #0d1117;
             --accent: #00d2ff;
-            --accent-glow: #3a7bd5;
             --admin-red: #ff4d4d;
-            --success-green: #2ecc71;
             --text: #ffffff;
             --text-dim: #8b949e;
             --glass-border: rgba(0, 210, 255, 0.15);
             --star-color: #fbbf24;
+            --star-empty: rgba(255, 255, 255, 0.05);
+            --toggle-bg: #161b22;
+            --quote: rgba(0, 210, 255, 0.2);
         }
 
-        /* Защита от копирования */
-        body {
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-            background: var(--bg);
-            color: var(--text);
-            font-family: 'Inter', sans-serif;
-            min-height: 100vh;
-            overflow-x: hidden;
-            animation: fadeIn 0.5s ease-out;
+        [data-theme="light"] {
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #0f172a;
+            --text-dim: #64748b;
+            --glass-border: rgba(0, 210, 255, 0.2);
+            --toggle-bg: #e2e8f0;
+            --star-empty: rgba(0, 0, 0, 0.1);
+            --quote: rgba(0, 210, 255, 0.1);
         }
 
-        input, textarea {
-            user-select: text !important;
-            -webkit-user-select: text !important;
-        }
-
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; user-select: none; -webkit-user-select: none; }
         
-        .mesh-gradient { position: fixed; inset: 0; background: radial-gradient(at 0% 0%, rgba(0, 210, 255, 0.12) 0, transparent 50%), radial-gradient(at 100% 100%, rgba(58, 123, 213, 0.1) 0, transparent 50%); z-index: -1; }
-        .container { max-width: 480px; margin: 0 auto; padding: 40px 20px; }
-        
-        .hero h1 { font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 2rem; text-transform: uppercase; margin-bottom: 30px; text-align: center; }
-        .hero h1 span { background: linear-gradient(90deg, var(--accent), var(--accent-glow)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; transition: background 0.4s ease; min-height: 100vh; overflow-x: hidden; }
 
-        .stats-container { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; }
-        .stat-card { background: rgba(255, 255, 255, 0.02); border: 1px solid var(--glass-border); border-radius: 20px; padding: 20px; text-align: center; }
-        .stat-card h2 { font-family: 'Unbounded'; font-size: 1.8rem; color: var(--accent); line-height: 1; margin-bottom: 5px; }
-        .stat-card p { text-transform: uppercase; font-size: 0.6rem; font-weight: 700; color: var(--text-dim); }
+        .container { max-width: 480px; margin: 0 auto; padding: 30px 20px 80px 20px; }
 
-        .cta-block {
-            background: linear-gradient(145deg, rgba(0, 210, 255, 0.05), rgba(58, 123, 213, 0.05));
-            border: 1px solid var(--glass-border);
-            border-radius: 30px;
-            padding: 30px;
-            text-align: center;
-            margin-bottom: 40px;
-            animation: slideUp 0.5s ease-out;
-        }
-        .cta-block p { font-size: 0.95rem; color: #cbd5e1; margin-bottom: 20px; line-height: 1.4; }
-        .cta-btn {
-            background: var(--accent);
-            color: #000 !important;
-            border: none;
-            padding: 16px 32px;
-            border-radius: 100px;
-            font-family: 'Unbounded';
-            font-size: 0.8rem;
-            cursor: pointer;
-            width: 100%;
-            transition: 0.3s;
-        }
-        .cta-btn:active { transform: scale(0.98); }
+        /* THEME SWITCH */
+        .theme-header { display: flex; justify-content: center; margin-bottom: 30px; }
+        .switch { position: relative; width: 74px; height: 38px; cursor: pointer; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; inset: 0; background: var(--toggle-bg); border-radius: 40px; border: 1px solid var(--glass-border); transition: 0.4s; display: flex; align-items: center; justify-content: space-between; padding: 0 10px; }
+        .slider:before { content: ""; position: absolute; height: 28px; width: 28px; left: 4px; bottom: 4px; background: var(--accent); border-radius: 50%; transition: 0.4s; z-index: 2; }
+        input:checked + .slider:before { transform: translateX(36px); background: #fbbf24; }
 
-        .reviews-grid { display: flex; flex-direction: column; gap: 20px; }
+        .logo { font-family: 'Unbounded'; font-size: 1.8rem; text-align: center; margin-bottom: 25px; }
+        .logo span { color: var(--accent); }
+
+        /* CARDS WITH ANIMATION */
         .card { 
-            background: var(--card-bg); border: 1px solid var(--glass-border); 
-            padding: 30px; border-radius: 30px; position: relative; 
-            animation: slideUp 0.4s ease-out both;
-            overflow: hidden;
+            background: var(--card-bg); 
+            border: 1px solid var(--glass-border); 
+            padding: 25px; 
+            border-radius: 28px; 
+            margin-bottom: 20px; 
+            position: relative; 
+            overflow: hidden; 
+            display: flex; 
+            flex-direction: column;
+            animation: slideUp 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+            opacity: 0;
         }
-        .card::before { content: "“"; position: absolute; top: -10px; right: 15px; font-family: 'Unbounded'; font-size: 7rem; color: var(--accent); opacity: 0.1; line-height: 1; pointer-events: none; }
         
-        .stars-row { color: var(--star-color); margin-bottom: 12px; font-size: 1.1rem; letter-spacing: 2px; position: relative; z-index: 1; }
-        .review-text { font-size: 1rem; line-height: 1.5; color: #cbd5e1; margin-bottom: 15px; word-wrap: break-word; position: relative; z-index: 1; }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-        .read-more-btn { background: none; border: none; color: var(--accent); font-family: 'Inter', sans-serif; font-size: 0.9rem; cursor: pointer; padding: 0; margin-top: -10px; margin-bottom: 15px; display: block; text-decoration: underline; touch-action: manipulation; position: relative; z-index: 2; }
+        .card::after { content: "“"; position: absolute; top: 10px; right: 20px; font-size: 70px; font-family: 'Unbounded'; color: var(--quote); line-height: 1; pointer-events: none; }
 
-        .user-meta { display: flex; align-items: center; gap: 12px; position: relative; z-index: 1; }
-        .avatar { width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, #00d2ff, #3a7bd5); display: grid; place-items: center; font-family: 'Unbounded'; font-weight: 700; font-size: 0.7rem; color: #000; }
-        .username { font-weight: 700; color: #fff; font-size: 0.9rem; }
+        .stars-row { margin-bottom: 12px; font-size: 1.1rem; display: flex; gap: 4px; }
+        .star { color: var(--star-empty); }
+        .star.filled { color: var(--star-color); }
 
-        /* Ответ администратора */
-        .admin-reply { margin-top: 15px; padding: 15px; background: rgba(255, 77, 77, 0.05); border-left: 3px solid var(--admin-red); border-radius: 0 15px 15px 0; position: relative; z-index: 1; }
-        .admin-tag { font-family: 'Unbounded'; font-size: 0.55rem; color: var(--admin-red); text-transform: uppercase; margin-bottom: 5px; display: block; font-weight: 700; }
-        .admin-text { font-size: 0.9rem; color: #cbd5e1; line-height: 1.4; }
+        .review-text { font-size: 0.95rem; line-height: 1.6; color: var(--text-dim); z-index: 1; }
+        .read-more { color: var(--accent); cursor: pointer; font-size: 0.85rem; font-weight: 700; margin-top: 8px; align-self: flex-start; z-index: 2; }
 
-        .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); padding: 16px 30px; border-radius: 50px; font-weight: 500; font-size: 0.9rem; z-index: 9999; display: none; justify-content: center; align-items: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); white-space: nowrap; min-width: 250px; pointer-events: none; }
-        .toast.show { display: flex; animation: fadeIn 0.3s; }
-        .toast.error { background: var(--admin-red); color: white; }
-        .toast.success { background: var(--success-green); color: white; }
+        .user-meta { display: flex; align-items: center; gap: 12px; margin-top: 20px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.05); }
+        .avatar { width: 34px; height: 34px; border-radius: 10px; background: var(--accent); color: #000; display: grid; place-items: center; font-weight: 700; font-size: 0.8rem; }
 
-        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); display: none; justify-content: center; align-items: center; z-index: 1000; backdrop-filter: blur(10px); padding: 20px; }
-        .modal { background: #0d1117; width: 100%; max-width: 400px; padding: 30px; border-radius: 35px; border: 1px solid var(--glass-border); }
-        .star-selection-area { text-align: center; margin-bottom: 25px; }
-        .rating-num { font-family: 'Unbounded'; font-size: 1.2rem; color: var(--accent); margin-bottom: 10px; display: block; }
-        .star-picker { display: flex; gap: 5px; justify-content: center; touch-action: manipulation; }
-        .star-picker span { font-size: 2.8rem; cursor: pointer; color: #1e293b; transition: 0.15s; padding: 0 5px; }
-        .star-picker span.active { color: var(--star-color); transform: scale(1.1); }
+        .admin-reply { 
+            margin-top: 15px; 
+            padding: 15px; 
+            background: rgba(255, 77, 77, 0.05); 
+            border-radius: 20px; 
+            border: 1px solid rgba(255, 77, 77, 0.2);
+            border-left: 4px solid var(--admin-red);
+        }
+        .admin-tag { font-family: 'Unbounded'; font-size: 10px; color: var(--admin-red); display: block; margin-bottom: 5px; font-weight: 700; }
+        .admin-text { font-size: 0.9rem; color: var(--text); line-height: 1.4; }
 
-        input, textarea { width: 100%; background: #161b22; border: 1px solid #30363d; padding: 16px; border-radius: 15px; color: #fff; margin-bottom: 15px; outline: none; font-family: 'Inter'; font-size: 16px; }
-        .submit-btn { width: 100%; padding: 18px; border-radius: 15px; background: var(--accent); border: none; color: #000 !important; font-family: 'Unbounded'; font-weight: 400; cursor: pointer; touch-action: manipulation; }
+        .cta-wrapper { background: linear-gradient(145deg, rgba(0, 210, 255, 0.05), rgba(58, 123, 213, 0.05)); border: 1px solid var(--glass-border); padding: 30px; border-radius: 32px; text-align: center; margin-bottom: 40px; }
+        .cta-btn { background: var(--accent); color: #000; border: none; padding: 18px; border-radius: 50px; font-family: 'Unbounded'; font-size: 0.75rem; width: 100%; cursor: pointer; font-weight: 700; transition: transform 0.2s; }
+        .cta-btn:active { transform: scale(0.95); }
+
+        /* MODAL WITH ANIMATION & CLOSE */
+        .modal-overlay { 
+            position: fixed; 
+            inset: 0; 
+            background: rgba(0,0,0,0.8); 
+            backdrop-filter: blur(12px); 
+            display: none; 
+            justify-content: center; 
+            align-items: center; 
+            z-index: 1000; 
+            padding: 20px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .modal-overlay.active { display: flex; opacity: 1; }
+
+        .modal { 
+            background: var(--card-bg); 
+            width: 100%; 
+            max-width: 400px; 
+            padding: 40px 30px 30px 30px; 
+            border-radius: 35px; 
+            border: 1px solid var(--glass-border); 
+            position: relative;
+            transform: scale(0.9);
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .modal-overlay.active .modal { transform: scale(1); }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 32px;
+            height: 32px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-dim);
+            font-size: 20px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .close-modal:hover { color: var(--admin-red); background: rgba(255, 77, 77, 0.1); }
+
+        .modal input, .modal textarea { width: 100%; background: rgba(128,128,128,0.08); border: 1px solid var(--glass-border); padding: 16px; border-radius: 15px; color: var(--text); margin-bottom: 15px; outline: none; font-size: 16px; }
+
+        /* TOASTS */
+        .toast-container { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 9999; width: 90%; max-width: 400px; pointer-events: none; }
+        .toast { background: var(--card-bg); border: 1px solid var(--glass-border); padding: 16px 20px; border-radius: 20px; font-size: 0.9rem; margin-bottom: 10px; opacity: 0; transform: translateY(-20px); transition: 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28); text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .toast.show { opacity: 1; transform: translateY(0); }
+        .toast.success { border-left: 5px solid #00ff88; }
+        .toast.error { border-left: 5px solid var(--admin-red); }
     </style>
 </head>
-<body>
+<body oncontextmenu="return false;">
 
-    <div id="toast" class="toast"></div>
-    <div class="mesh-gradient"></div>
+    <div class="toast-container" id="toastContainer"></div>
 
     <div class="container">
-        <header class="hero">
-            <h1>ON1X VPN<span> Отзывы</span></h1>
-        </header>
-
-        <div class="stats-container">
-            <div class="stat-card"><h2 id="avgRating">0.0</h2><p>Рейтинг</p></div>
-            <div class="stat-card"><h2 id="totalCount">0</h2><p>Отзывов</p></div>
+        <div class="theme-header">
+            <label class="switch">
+                <input type="checkbox" id="themeToggle">
+                <span class="slider"><span>🌙</span><span>☀️</span></span>
+            </label>
         </div>
 
-        <div class="cta-block">
-            <p>Оставьте свой отзыв, который поможет нам стать лучше</p>
-            <button class="cta-btn" id="addBtn">Оставить отзыв</button>
+        <h1 class="logo">Cyber<span>Reviews</span></h1>
+
+        <div class="cta-wrapper">
+            <p style="color:var(--text-dim); margin-bottom:15px; font-size:0.9rem;">Ваше мнение — наш приоритет</p>
+            <button class="cta-btn" id="addBtn">ОСТАВИТЬ ОТЗЫВ</button>
         </div>
 
-        <div class="reviews-grid" id="grid"></div>
+        <div id="grid"></div>
     </div>
 
     <div class="modal-overlay" id="overlay">
         <div class="modal">
-            <h2 style="font-family: 'Unbounded'; text-align: center; margin-bottom: 15px; font-size: 1rem; font-weight: 400; color: #fff;">ВАША ОЦЕНКА</h2>
-            <div class="star-selection-area">
-                <span class="rating-num" id="ratingDisplay">5 / 5</span>
-                <div class="star-picker" id="starPicker">
-                    <span data-v="1">★</span><span data-v="2">★</span><span data-v="3">★</span><span data-v="4">★</span><span data-v="5">★</span>
-                </div>
+            <div class="close-modal" id="closeModal">×</div>
+            <h3 style="font-family:'Unbounded'; font-size: 14px; text-align:center; margin-bottom: 25px;">НОВЫЙ ОТЗЫВ</h3>
+            <div id="starPicker" style="display:flex; justify-content:center; gap:8px; margin-bottom:20px;">
+                <span style="font-size:2rem; cursor:pointer; color:var(--star-empty);" data-v="1">★</span>
+                <span style="font-size:2rem; cursor:pointer; color:var(--star-empty);" data-v="2">★</span>
+                <span style="font-size:2rem; cursor:pointer; color:var(--star-empty);" data-v="3">★</span>
+                <span style="font-size:2rem; cursor:pointer; color:var(--star-empty);" data-v="4">★</span>
+                <span style="font-size:2rem; cursor:pointer; color:var(--star-empty);" data-v="5">★</span>
             </div>
-            <input type="text" id="nameInp" placeholder="Ваше имя" autocomplete="off">
-            <textarea id="msgInp" rows="4" placeholder="Напишите ваш отзыв"></textarea>
-            <button class="submit-btn" id="saveBtn">Опубликовать</button>
+            <input type="text" id="nameInp" placeholder="Ваше имя">
+            <textarea id="msgInp" rows="4" placeholder="Напишите здесь всё, что думаете..."></textarea>
+            <button class="cta-btn" id="saveBtn">ОПУБЛИКОВАТЬ</button>
         </div>
     </div>
 
     <script>
+        // SECURITY
+        document.addEventListener('keydown', e => {
+            if (e.ctrlKey && [67, 85, 73, 74, 83].includes(e.keyCode)) e.preventDefault();
+            if (e.keyCode === 123) e.preventDefault();
+        });
+
         const SB_URL = 'https://yvnnngfzzjdbeiscwluy.supabase.co'; 
         const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl2bm5uZ2Z6empkYmVpc2N3bHV5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0NzY2ODYsImV4cCI6MjA5MDA1MjY4Nn0.SesGG2QhbJKfAklZDiL8oolWQ6qaTtBwRL_tvigpd9A';
         const supabaseClient = supabase.createClient(SB_URL, SB_KEY);
 
         const grid = document.getElementById('grid');
         const overlay = document.getElementById('overlay');
-        const toast = document.getElementById('toast');
-        const ratingDisplay = document.getElementById('ratingDisplay');
-        let currentStars = 5;
+        let currentStars = 0;
 
-        // Защита
-        document.addEventListener('contextmenu', e => e.preventDefault());
-        document.addEventListener('keydown', e => {
-            if (e.ctrlKey && (e.keyCode === 67 || e.keyCode === 85 || e.keyCode === 83 || e.keyCode === 80)) e.preventDefault();
-            if (e.keyCode === 123) e.preventDefault();
-        });
-
-        function showNotification(text, type) {
-            toast.textContent = text;
-            toast.className = `toast show ${type}`;
-            setTimeout(() => { toast.classList.remove('show'); }, 3000);
+        function showToast(text, type = 'success') {
+            const t = document.createElement('div');
+            t.className = `toast show ${type}`;
+            t.innerText = text;
+            document.getElementById('toastContainer').appendChild(t);
+            setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 400); }, 3000);
         }
 
-        window.expandText = (btn, id) => {
-            const textEl = document.getElementById(`text-${id}`);
-            textEl.innerText = btn.getAttribute('data-full');
-            btn.remove();
-        };
+        const themeToggle = document.getElementById('themeToggle');
+        themeToggle.onchange = () => {
+            document.body.setAttribute('data-theme', themeToggle.checked ? 'light' : 'dark');
+        }
 
-        document.getElementById('addBtn').addEventListener('pointerdown', () => { overlay.style.display = 'flex'; });
-        overlay.addEventListener('pointerdown', (e) => { if(e.target === overlay) overlay.style.display = 'none'; });
+        const openModal = () => {
+            overlay.classList.add('active');
+            currentStars = 0;
+            pickerStars.forEach(st => st.style.color = 'var(--star-empty)');
+        };
+        const closeModal = () => overlay.classList.remove('active');
+
+        document.getElementById('addBtn').onclick = openModal;
+        document.getElementById('closeModal').onclick = closeModal;
+        window.onclick = e => { if(e.target == overlay) closeModal(); }
 
         const pickerStars = document.querySelectorAll('#starPicker span');
         pickerStars.forEach(s => {
-            s.addEventListener('pointerdown', (e) => {
-                e.preventDefault();
-                currentStars = parseInt(s.dataset.v);
-                updatePicker();
-            });
+            s.onclick = () => {
+                currentStars = s.dataset.v;
+                pickerStars.forEach(st => st.style.color = st.dataset.v <= currentStars ? 'var(--star-color)' : 'var(--star-empty)');
+            }
         });
 
-        function updatePicker() {
-            pickerStars.forEach(s => s.classList.toggle('active', s.dataset.v <= currentStars));
-            ratingDisplay.innerText = `${currentStars} / 5`;
-        }
-        updatePicker();
-
-        async function fetchReviews() {
-            let { data: reviews, error } = await supabaseClient
-                .from('reviews')
-                .select('*')
-                .in('proverka', [1, 2]) 
-                .order('created_at', { ascending: false });
-            if (!error) render(reviews);
+        async function load() {
+            const { data } = await supabaseClient.from('reviews').select('*').in('proverka', [1,2]).order('created_at', {ascending: false});
+            if(data) render(data);
         }
 
         function render(data) {
-            grid.innerHTML = data.map((r, i) => {
-                const isLong = r.msg.length > 200;
-                const displayMsg = isLong ? r.msg.substring(0, 200) + '...' : r.msg;
-                return `
-                <div class="card" style="animation-delay: ${i * 0.05}s">
-                    <div class="stars-row">${'★'.repeat(r.stars)}${'☆'.repeat(5-r.stars)}</div>
-                    <p class="review-text" id="text-${r.id}">${displayMsg}</p>
-                    ${isLong ? `<button class="read-more-btn" data-full="${r.msg.replace(/"/g, '&quot;')}" onclick="expandText(this, '${r.id}')">Читать полностью</button>` : ''}
+            grid.innerHTML = '';
+            data.forEach((r, index) => {
+                let stars = '';
+                for(let i=1; i<=5; i++) stars += `<span class="star ${i <= r.stars ? 'filled' : ''}">★</span>`;
+
+                const isLong = r.msg.length > 150;
+                const txt = isLong ? r.msg.substring(0, 150) + '...' : r.msg;
+
+                let adminHtml = '';
+                if(r.admin && r.admin.trim() !== "") {
+                    adminHtml = `<div class="admin-reply"><span class="admin-tag">ОТВЕТ АДМИНА</span><p class="admin-text">${r.admin}</p></div>`;
+                }
+
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.style.animationDelay = `${index * 0.1}s`; // Плавная очередь появления
+                card.innerHTML = `
+                    <div class="stars-row">${stars}</div>
+                    <p class="review-text">${txt}</p>
+                    ${isLong ? `<span class="read-more">Читать полностью</span>` : ''}
                     <div class="user-meta">
-                        <div class="avatar">${r.name ? r.name[0].toUpperCase() : '?'}</div>
-                        <div class="username">${r.name}</div>
+                        <div class="avatar">${r.name[0].toUpperCase()}</div>
+                        <div style="font-weight:700; font-size:0.85rem;">${r.name}</div>
                     </div>
-                    ${r.admin ? `
-                        <div class="admin-reply">
-                            <span class="admin-tag">Ответ администратора</span>
-                            <div class="admin-text">${r.admin}</div>
-                        </div>
-                    ` : ''}
-                </div>`;
-            }).join('');
-            updateStats(data);
+                    ${adminHtml}
+                `;
+
+                if(isLong) {
+                    card.querySelector('.read-more').onclick = function() {
+                        card.querySelector('.review-text').innerText = r.msg;
+                        this.remove();
+                    };
+                }
+                grid.appendChild(card);
+            });
         }
 
-        function updateStats(data) {
-            const rOnly = data.filter(r => r.proverka === 1);
-            const avg = rOnly.length > 0 ? (rOnly.reduce((s, r) => s + r.stars, 0) / rOnly.length).toFixed(1) : "0.0";
-            document.getElementById('avgRating').innerText = avg;
-            document.getElementById('totalCount').innerText = data.length;
-        }
+        document.getElementById('saveBtn').onclick = async () => {
+            const n = document.getElementById('nameInp').value.trim();
+            const m = document.getElementById('msgInp').value.trim();
+            if(!n || !m || currentStars == 0) return showToast('Заполни всё и выбери звезды!', 'error');
 
-        document.getElementById('saveBtn').addEventListener('pointerdown', async () => {
-            const name = document.getElementById('nameInp').value.trim();
-            const msg = document.getElementById('msgInp').value.trim();
-            if(!name || !msg) { showNotification("Заполните все поля", "error"); return; }
-            const { error } = await supabaseClient.from('reviews').insert([{ name, msg, stars: currentStars, proverka: 0 }]);
-            if (!error) {
-                overlay.style.display = 'none';
+            const { error } = await supabaseClient.from('reviews').insert([{name:n, msg:m, stars:currentStars, proverka:0}]);
+            if(!error) {
+                closeModal();
+                showToast('Готово! Отправлено на проверку.', 'success');
                 document.getElementById('nameInp').value = '';
                 document.getElementById('msgInp').value = '';
-                showNotification("Отправлено на модерацию", "success");
-            } else { showNotification("Ошибка сервера", "error"); }
-        });
+            } else {
+                showToast('Ошибка базы данных', 'error');
+            }
+        };
 
-        fetchReviews();
+        load();
     </script>
 </body>
 </html>
