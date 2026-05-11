@@ -81,7 +81,8 @@
 
         .reviews-grid { display: flex; flex-direction: column; gap: 20px; }
         .card { 
-            background: var(--card-bg); border: 1px solid var(--glass-border); 
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border); 
             padding: 30px; border-radius: 30px; position: relative; 
             animation: slideUp 0.4s ease-out both;
             overflow: hidden;
@@ -97,7 +98,6 @@
         .avatar { width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, #00d2ff, #3a7bd5); display: grid; place-items: center; font-family: 'Unbounded'; font-weight: 700; font-size: 0.7rem; color: #000; }
         .username { font-weight: 700; color: #fff; font-size: 0.9rem; }
 
-        /* Ответ администратора */
         .admin-reply { margin-top: 15px; padding: 15px; background: rgba(255, 77, 77, 0.05); border-left: 3px solid var(--admin-red); border-radius: 0 15px 15px 0; position: relative; z-index: 1; }
         .admin-tag { font-family: 'Unbounded'; font-size: 0.55rem; color: var(--admin-red); text-transform: uppercase; margin-bottom: 5px; display: block; font-weight: 700; }
         .admin-text { font-size: 0.9rem; color: #cbd5e1; line-height: 1.4; }
@@ -152,13 +152,14 @@
                 </div>
             </div>
             <input type="text" id="nameInp" placeholder="Ваше имя" autocomplete="off">
+            <input type="text" id="contactInp" placeholder="ID или @username (необязательно)" autocomplete="off">
             <textarea id="msgInp" rows="4" placeholder="Напишите ваш отзыв"></textarea>
             <button class="submit-btn" id="saveBtn">Опубликовать</button>
         </div>
     </div>
 
     <script>
-        const SB_URL = 'https://yvnnngfzzjdbeiscwluy.supabase.co'; 
+        const SB_URL = 'https://yvnnngfzzjdbeiscwluy.supabase.co';
         const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl2bm5uZ2Z6empkYmVpc2N3bHV5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0NzY2ODYsImV4cCI6MjA5MDA1MjY4Nn0.SesGG2QhbJKfAklZDiL8oolWQ6qaTtBwRL_tvigpd9A';
         const supabaseClient = supabase.createClient(SB_URL, SB_KEY);
 
@@ -209,7 +210,7 @@
             let { data: reviews, error } = await supabaseClient
                 .from('reviews')
                 .select('*')
-                .in('proverka', [1, 2]) 
+                .in('proverka', [1, 2])
                 .order('created_at', { ascending: false });
             if (!error) render(reviews);
         }
@@ -247,12 +248,23 @@
 
         document.getElementById('saveBtn').addEventListener('pointerdown', async () => {
             const name = document.getElementById('nameInp').value.trim();
+            const contact = document.getElementById('contactInp').value.trim();
             const msg = document.getElementById('msgInp').value.trim();
+            
             if(!name || !msg) { showNotification("Заполните все поля", "error"); return; }
-            const { error } = await supabaseClient.from('reviews').insert([{ name, msg, stars: currentStars, proverka: 0 }]);
+            
+            const { error } = await supabaseClient.from('reviews').insert([{ 
+                name, 
+                contact: contact || null, 
+                msg, 
+                stars: currentStars, 
+                proverka: 0 
+            }]);
+      
             if (!error) {
                 overlay.style.display = 'none';
                 document.getElementById('nameInp').value = '';
+                document.getElementById('contactInp').value = '';
                 document.getElementById('msgInp').value = '';
                 showNotification("Отправлено на модерацию", "success");
             } else { showNotification("Ошибка сервера", "error"); }
