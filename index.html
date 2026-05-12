@@ -225,16 +225,27 @@
         }
         updatePicker();
 
+        // Загрузка из кэша для мгновенного отображения на мобильных
+        const cached = localStorage.getItem('reviews_cache');
+        if (cached) render(JSON.parse(cached));
+
         async function fetchReviews() {
-            let { data: reviews, error } = await supabaseClient
-                .from('reviews')
-                .select('*')
-                .in('proverka', [1, 2])
-                .order('created_at', { ascending: false });
-            if (!error) render(reviews);
+            try {
+                let { data: reviews, error } = await supabaseClient
+                    .from('reviews')
+                    .select('id, name, msg, stars, created_at, admin, proverka')
+                    .in('proverka', [1, 2])
+                    .order('created_at', { ascending: false });
+                
+                if (!error && reviews) {
+                    localStorage.setItem('reviews_cache', JSON.stringify(reviews));
+                    render(reviews);
+                }
+            } catch (e) { console.error(e); }
         }
 
         function render(data) {
+            if (!data) return;
             grid.innerHTML = data.map((r, i) => {
                 const isLong = r.msg.length > 200;
                 const displayMsg = isLong ? r.msg.substring(0, 200) + '...' : r.msg;
