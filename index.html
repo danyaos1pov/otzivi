@@ -51,7 +51,8 @@
         .hero h1 span { background: linear-gradient(90deg, var(--accent), var(--accent-glow)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
         .stats-container { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; }
-        .stat-card { background: rgba(255, 255, 255, 0.02); border: 1px solid var(--glass-border); border-radius: 20px; padding: 20px; text-align: center; }
+        .stat-card { background: rgba(255, 255, 255, 0.02); border: 1px solid var(--glass-border); border-radius: 20px; padding: 20px; text-align: center; transition: 0.3s; }
+        .stat-card:hover { border-color: var(--accent); transform: translateY(-5px); background: rgba(0, 210, 255, 0.05); }
         .stat-card h2 { font-family: 'Unbounded'; font-size: 1.8rem; color: var(--accent); line-height: 1; margin-bottom: 5px; }
         .stat-card p { text-transform: uppercase; font-size: 0.6rem; font-weight: 700; color: var(--text-dim); }
 
@@ -75,8 +76,9 @@
             font-size: 0.8rem;
             cursor: pointer;
             width: 100%;
-            transition: 0.3s;
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
+        .cta-btn:hover { background: #fff; transform: scale(1.03); box-shadow: 0 0 20px rgba(0, 210, 255, 0.4); }
         .cta-btn:active { transform: scale(0.98); }
 
         .reviews-grid { display: flex; flex-direction: column; gap: 20px; }
@@ -86,17 +88,21 @@
             padding: 30px; border-radius: 30px; position: relative; 
             animation: slideUp 0.4s ease-out both;
             overflow: hidden;
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
+        .card:hover { border-color: rgba(0, 210, 255, 0.4); transform: translateY(-3px); background: rgba(13, 17, 23, 0.8); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); }
         .card::before { content: "“"; position: absolute; top: -10px; right: 15px; font-family: 'Unbounded'; font-size: 7rem; color: var(--accent); opacity: 0.1; line-height: 1; pointer-events: none; }
         
         .stars-row { color: var(--star-color); margin-bottom: 12px; font-size: 1.1rem; letter-spacing: 2px; position: relative; z-index: 1; }
         .review-text { font-size: 1rem; line-height: 1.5; color: #cbd5e1; margin-bottom: 15px; word-wrap: break-word; position: relative; z-index: 1; }
 
-        .read-more-btn { background: none; border: none; color: var(--accent); font-family: 'Inter', sans-serif; font-size: 0.9rem; cursor: pointer; padding: 0; margin-top: -10px; margin-bottom: 15px; display: block; text-decoration: underline; touch-action: manipulation; position: relative; z-index: 2; }
+        .read-more-btn { background: none; border: none; color: var(--accent); font-family: 'Inter', sans-serif; font-size: 0.9rem; cursor: pointer; padding: 0; margin-top: -10px; margin-bottom: 15px; display: block; text-decoration: underline; touch-action: manipulation; position: relative; z-index: 2; transition: 0.2s; }
+        .read-more-btn:hover { color: #fff; }
 
         .user-meta { display: flex; align-items: center; gap: 12px; position: relative; z-index: 1; }
         .avatar { width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, #00d2ff, #3a7bd5); display: grid; place-items: center; font-family: 'Unbounded'; font-weight: 700; font-size: 0.7rem; color: #000; }
-        .username { font-weight: 700; color: #fff; font-size: 0.9rem; }
+        .username { font-weight: 700; color: #fff; font-size: 0.9rem; display: flex; flex-direction: column; }
+        .review-date { font-size: 0.7rem; color: var(--text-dim); font-weight: 400; margin-top: 2px; }
 
         .admin-reply { margin-top: 15px; padding: 15px; background: rgba(255, 77, 77, 0.05); border-left: 3px solid var(--admin-red); border-radius: 0 15px 15px 0; position: relative; z-index: 1; }
         .admin-tag { font-family: 'Unbounded'; font-size: 0.55rem; color: var(--admin-red); text-transform: uppercase; margin-bottom: 5px; display: block; font-weight: 700; }
@@ -108,15 +114,22 @@
         .toast.success { background: var(--success-green); color: white; }
 
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); display: none; justify-content: center; align-items: center; z-index: 1000; backdrop-filter: blur(10px); padding: 20px; }
-        .modal { background: #0d1117; width: 100%; max-width: 400px; padding: 30px; border-radius: 35px; border: 1px solid var(--glass-border); }
+        .modal { background: #0d1117; width: 100%; max-width: 400px; padding: 30px; border-radius: 35px; border: 1px solid var(--glass-border); position: relative; animation: slideUp 0.4s ease-out; }
+        
+        .close-modal { position: absolute; top: 20px; right: 25px; font-size: 2rem; color: var(--text-dim); cursor: pointer; transition: 0.3s; line-height: 1; }
+        .close-modal:hover { color: var(--accent); transform: rotate(90deg); }
+
         .star-selection-area { text-align: center; margin-bottom: 25px; }
         .rating-num { font-family: 'Unbounded'; font-size: 1.2rem; color: var(--accent); margin-bottom: 10px; display: block; }
         .star-picker { display: flex; gap: 5px; justify-content: center; touch-action: manipulation; }
-        .star-picker span { font-size: 2.8rem; cursor: pointer; color: #1e293b; transition: 0.15s; padding: 0 5px; }
+        .star-picker span { font-size: 2.8rem; cursor: pointer; color: #1e293b; transition: 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); padding: 0 5px; }
         .star-picker span.active { color: var(--star-color); transform: scale(1.1); }
+        .star-picker span:hover { transform: scale(1.25); color: var(--star-color); }
 
-        input, textarea { width: 100%; background: #161b22; border: 1px solid #30363d; padding: 16px; border-radius: 15px; color: #fff; margin-bottom: 15px; outline: none; font-family: 'Inter'; font-size: 16px; }
-        .submit-btn { width: 100%; padding: 18px; border-radius: 15px; background: var(--accent); border: none; color: #000 !important; font-family: 'Unbounded'; font-weight: 400; cursor: pointer; touch-action: manipulation; }
+        input, textarea { width: 100%; background: #161b22; border: 1px solid #30363d; padding: 16px; border-radius: 15px; color: #fff; margin-bottom: 15px; outline: none; font-family: 'Inter'; font-size: 16px; transition: 0.3s; }
+        input:focus, textarea:focus { border-color: var(--accent); background: #1c2128; box-shadow: 0 0 10px rgba(0, 210, 255, 0.1); }
+        .submit-btn { width: 100%; padding: 18px; border-radius: 15px; background: var(--accent); border: none; color: #000 !important; font-family: 'Unbounded'; font-weight: 400; cursor: pointer; touch-action: manipulation; transition: 0.3s; }
+        .submit-btn:hover { background: #fff; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0, 210, 255, 0.3); }
     </style>
 </head>
 <body>
@@ -144,6 +157,7 @@
 
     <div class="modal-overlay" id="overlay">
         <div class="modal">
+            <span class="close-modal" id="closeBtn">&times;</span>
             <h2 style="font-family: 'Unbounded'; text-align: center; margin-bottom: 15px; font-size: 1rem; font-weight: 400; color: #fff;">ВАША ОЦЕНКА</h2>
             <div class="star-selection-area">
                 <span class="rating-num" id="ratingDisplay">5 / 5</span>
@@ -165,6 +179,7 @@
 
         const grid = document.getElementById('grid');
         const overlay = document.getElementById('overlay');
+        const closeBtn = document.getElementById('closeBtn');
         const toast = document.getElementById('toast');
         const ratingDisplay = document.getElementById('ratingDisplay');
         let currentStars = 5;
@@ -188,8 +203,12 @@
             btn.remove();
         };
 
-        document.getElementById('addBtn').addEventListener('pointerdown', () => { overlay.style.display = 'flex'; });
-        overlay.addEventListener('pointerdown', (e) => { if(e.target === overlay) overlay.style.display = 'none'; });
+        const openModal = () => { overlay.style.display = 'flex'; };
+        const closeModal = () => { overlay.style.display = 'none'; };
+
+        document.getElementById('addBtn').addEventListener('pointerdown', openModal);
+        closeBtn.addEventListener('pointerdown', closeModal);
+        overlay.addEventListener('pointerdown', (e) => { if(e.target === overlay) closeModal(); });
 
         const pickerStars = document.querySelectorAll('#starPicker span');
         pickerStars.forEach(s => {
@@ -219,6 +238,13 @@
             grid.innerHTML = data.map((r, i) => {
                 const isLong = r.msg.length > 200;
                 const displayMsg = isLong ? r.msg.substring(0, 200) + '...' : r.msg;
+                
+                const dateObj = new Date(r.created_at);
+                const day = String(dateObj.getDate()).padStart(2, '0');
+                const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+                const year = dateObj.getFullYear();
+                const fullDate = `${day}.${month}.${year}`;
+
                 return `
                 <div class="card" style="animation-delay: ${i * 0.05}s">
                     <div class="stars-row">${'★'.repeat(r.stars)}${'☆'.repeat(5-r.stars)}</div>
@@ -226,7 +252,10 @@
                     ${isLong ? `<button class="read-more-btn" data-full="${r.msg.replace(/"/g, '&quot;')}" onclick="expandText(this, '${r.id}')">Читать полностью</button>` : ''}
                     <div class="user-meta">
                         <div class="avatar">${r.name ? r.name[0].toUpperCase() : '?'}</div>
-                        <div class="username">${r.name}</div>
+                        <div class="username">
+                            <span>${r.name}</span>
+                            <span class="review-date">${fullDate}</span>
+                        </div>
                     </div>
                     ${r.admin ? `
                         <div class="admin-reply">
@@ -262,7 +291,7 @@
             }]);
       
             if (!error) {
-                overlay.style.display = 'none';
+                closeModal();
                 document.getElementById('nameInp').value = '';
                 document.getElementById('contactInp').value = '';
                 document.getElementById('msgInp').value = '';
