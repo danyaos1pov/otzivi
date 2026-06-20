@@ -3,21 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ON1X VPN | Отзывы</title>
-    <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700&family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <title>ON1X VPN — Отзывы</title>
     <style>
         :root {
-            --bg: #05070a;
-            --card-bg: #0d1117;
-            --accent: #00d2ff;
-            --accent-glow: #3a7bd5;
+            /* Темная тема — Необрутализм (Графит + Токсичный лайм) */
+            --bg-main: #0b0f17;
+            --card-bg: #1e293b;
+            --card-border: #000000;
+            --shadow-color: #000000;
+            --text-title: #ffffff;
+            --text-body: #f8fafc;
+            --text-sub: #94a3b8;
+            
+            --btn-primary-bg: #ccff00; /* Яркий акцент */
+            --btn-primary-text: #000000;
+            --btn-secondary-bg: #0f172a;
+            --btn-secondary-border: #000000;
+            
+            --slider-bg: #1e293b;
+            --slider-thumb: #ccff00;
+            --icon-color: #ffffff;
+            
+            --star-filled: #ccff00; /* Лайм в темной теме */
+            --star-empty: transparent;
+            --input-bg: #0f172a;
             --admin-red: #ff4d4d;
             --success-green: #2ecc71;
-            --text: #ffffff;
-            --text-dim: #8b949e;
-            --glass-border: rgba(0, 210, 255, 0.15);
-            --star-color: #fbbf24;
+        }
+
+        [data-theme="light"] {
+            /* Светлая тема — Газетный брутализм */
+            --bg-main: #f1f5f9;
+            --card-bg: #ffffff;
+            --card-border: #000000;
+            --shadow-color: #000000;
+            --text-title: #000000;
+            --text-body: #0f172a;
+            --text-sub: #64748b;
+            
+            --btn-primary-bg: #000000;
+            --btn-primary-text: #ffffff;
+            --btn-secondary-bg: #f8fafc;
+            --btn-secondary-border: #000000;
+            
+            --slider-bg: #ffffff;
+            --slider-thumb: #000000;
+            --icon-color: #000000;
+            
+            --star-filled: #000000; /* Черный в светлой теме */
+            --star-empty: transparent;
+            --input-bg: #f8fafc;
+            --admin-red: #d32f2f;
+            --success-green: #27ae60;
         }
 
         /* Защита от копирования */
@@ -26,12 +63,15 @@
             -moz-user-select: none;
             -ms-user-select: none;
             user-select: none;
-            background: var(--bg);
-            color: var(--text);
-            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-body);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             min-height: 100vh;
-            overflow-x: hidden;
-            animation: fadeIn 0.5s ease-out;
+            padding: 40px 24px;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            transition: background 0.3s ease;
         }
 
         input, textarea {
@@ -39,107 +79,417 @@
             -webkit-user-select: text !important;
         }
 
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        
-        .mesh-gradient { position: fixed; inset: 0; background: radial-gradient(at 0% 0%, rgba(0, 210, 255, 0.12) 0, transparent 50%), radial-gradient(at 100% 100%, rgba(58, 123, 213, 0.1) 0, transparent 50%); z-index: -1; }
-        .container { max-width: 480px; margin: 0 auto; padding: 40px 20px; }
-        
-        .hero h1 { font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 2rem; text-transform: uppercase; margin-bottom: 30px; text-align: center; }
-        .hero h1 span { background: linear-gradient(90deg, var(--accent), var(--accent-glow)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-
-        .stats-container { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; }
-        .stat-card { background: rgba(255, 255, 255, 0.02); border: 1px solid var(--glass-border); border-radius: 20px; padding: 20px; text-align: center; transition: 0.3s; }
-        .stat-card:hover { border-color: var(--accent); transform: translateY(-5px); background: rgba(0, 210, 255, 0.05); }
-        .stat-card h2 { font-family: 'Unbounded'; font-size: 1.8rem; color: var(--accent); line-height: 1; margin-bottom: 5px; }
-        .stat-card p { text-transform: uppercase; font-size: 0.6rem; font-weight: 700; color: var(--text-dim); }
-
-        .cta-block {
-            background: linear-gradient(145deg, rgba(0, 210, 255, 0.05), rgba(58, 123, 213, 0.05));
-            border: 1px solid var(--glass-border);
-            border-radius: 30px;
-            padding: 30px;
-            text-align: center;
-            margin-bottom: 40px;
-            animation: slideUp 0.5s ease-out;
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
         }
-        .cta-block p { font-size: 0.95rem; color: #cbd5e1; margin-bottom: 20px; line-height: 1.4; }
-        .cta-btn {
-            background: var(--accent);
-            color: #000 !important;
-            border: none;
-            padding: 16px 32px;
-            border-radius: 100px;
-            font-family: 'Unbounded';
-            font-size: 0.8rem;
-            cursor: pointer;
+
+        /* Переключатель темы */
+        .theme-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
             width: 100%;
-            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-bottom: 40px;
         }
-        .cta-btn:hover { background: #fff; transform: scale(1.03); box-shadow: 0 0 20px rgba(0, 210, 255, 0.4); }
-        .cta-btn:active { transform: scale(0.98); }
 
-        .reviews-grid { display: flex; flex-direction: column; gap: 20px; }
-        .card { 
+        .theme-switch {
+            position: relative;
+            width: 76px;
+            height: 38px;
+            background: var(--slider-bg);
+            border: 2px solid var(--card-border);
+            border-radius: 0px; 
+            box-shadow: 3px 3px 0px var(--shadow-color);
+            cursor: pointer;
+            padding: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: background 0.3s ease;
+        }
+
+        .theme-checkbox {
+            display: none;
+        }
+
+        .switch-icon {
+            width: 18px;
+            height: 18px;
+            fill: none;
+            stroke: var(--icon-color);
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            z-index: 1;
+            transition: stroke 0.3s ease;
+            margin: 0 4px;
+        }
+
+        .theme-handle {
+            position: absolute;
+            left: 4px;
+            width: 26px;
+            height: 26px;
+            background-color: var(--slider-thumb);
+            border: 2px solid var(--card-border);
+            transition: transform 0.2s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+            z-index: 2;
+        }
+
+        .theme-checkbox:checked + .theme-switch .theme-handle {
+            transform: translateX(38px);
+        }
+
+        /* Контейнер */
+        .container {
+            width: 100%;
+            max-width: 360px;
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+        }
+
+        /* Шапка */
+        .brand-header {
+            text-align: center;
+        }
+
+        .brand-title {
+            font-size: 42px;
+            font-weight: 900;
+            letter-spacing: -1px;
+            color: var(--text-title);
+            text-transform: uppercase;
+            -webkit-text-stroke: 1px var(--card-border);
+        }
+
+        .brand-slogan {
+            display: inline-block;
+            font-size: 12px;
+            background: var(--btn-primary-bg);
+            color: var(--btn-primary-text);
+            border: 2px solid var(--card-border);
+            padding: 2px 8px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 6px;
+            box-shadow: 2px 2px 0px var(--shadow-color);
+        }
+
+        /* Статистика */
+        .stats-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        .stat-card {
             background: var(--card-bg);
-            border: 1px solid var(--glass-border); 
-            padding: 30px; border-radius: 30px; position: relative; 
-            animation: slideUp 0.4s ease-out both;
-            overflow: hidden;
-            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 3px solid var(--card-border);
+            padding: 16px;
+            text-align: center;
+            box-shadow: 4px 4px 0px var(--shadow-color);
         }
-        .card:hover { border-color: rgba(0, 210, 255, 0.4); transform: translateY(-3px); background: rgba(13, 17, 23, 0.8); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); }
-        .card::before { content: "“"; position: absolute; top: -10px; right: 15px; font-family: 'Unbounded'; font-size: 7rem; color: var(--accent); opacity: 0.1; line-height: 1; pointer-events: none; }
+
+        .stat-card h2 {
+            font-size: 32px;
+            font-weight: 900;
+            color: var(--text-title);
+            line-height: 1;
+            margin-bottom: 4px;
+            -webkit-text-stroke: 1px var(--card-border);
+        }
+
+        [data-theme="light"] .stat-card h2 {
+            -webkit-text-stroke: 0px;
+        }
+
+        .stat-card p {
+            font-size: 10px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-sub);
+        }
+
+        /* Жесткие брутальные блоки */
+        .section-box {
+            background: var(--card-bg);
+            border: 3px solid var(--card-border);
+            border-radius: 0px;
+            padding: 20px 16px 16px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            box-shadow: 8px 8px 0px var(--shadow-color);
+            position: relative;
+        }
+
+        /* Сетка отзывов */
+        .reviews-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* Мощные SVG Звезды */
+        .stars-row {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+        }
+
+        .brutal-star {
+            width: 20px;
+            height: 20px;
+        }
+
+        .brutal-star path {
+            stroke: #000000;
+            stroke-width: 2px;
+            stroke-linejoin: miter;
+            transition: fill 0.3s ease;
+        }
+
+        .brutal-star.filled path {
+            fill: var(--star-filled);
+        }
+
+        .brutal-star.empty path {
+            fill: var(--star-empty);
+        }
+
+        .review-text {
+            font-size: 14px;
+            line-height: 1.5;
+            color: var(--text-body);
+            word-wrap: break-word;
+        }
+
+        /* Кнопка Читать полностью */
+        .read-more-btn {
+            background: none;
+            border: none;
+            color: var(--text-title);
+            font-size: 13px;
+            font-weight: 800;
+            cursor: pointer;
+            text-align: left;
+            text-decoration: underline;
+            margin-top: -6px;
+            text-transform: uppercase;
+        }
+
+        /* Мета-данные пользователя */
+        .user-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-top: 2px dashed var(--card-border);
+            padding-top: 12px;
+            margin-top: 4px;
+        }
+
+        .avatar {
+            width: 32px;
+            height: 32px;
+            background: var(--btn-primary-bg);
+            border: 2px solid var(--card-border);
+            color: var(--btn-primary-text);
+            display: grid;
+            place-items: center;
+            font-weight: 900;
+            font-size: 14px;
+        }
+
+        .username {
+            display: flex;
+            flex-direction: column;
+            font-weight: 800;
+            font-size: 14px;
+            color: var(--text-title);
+        }
+
+        .review-date {
+            font-size: 11px;
+            color: var(--text-sub);
+            font-weight: 500;
+            margin-top: 1px;
+        }
+
+        /* Ответ админа */
+        .admin-reply {
+            margin-top: 4px;
+            padding: 12px;
+            background: var(--btn-secondary-bg);
+            border: 2px solid var(--btn-secondary-border);
+            box-shadow: 4px 4px 0px var(--admin-red);
+        }
+
+        .admin-tag {
+            font-size: 10px;
+            font-weight: 900;
+            color: var(--admin-red);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        .admin-text {
+            font-size: 13px;
+            color: var(--text-body);
+            line-height: 1.4;
+        }
+
+        /* Кнопки */
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 16px 20px;
+            font-size: 16px;
+            font-weight: 800;
+            text-decoration: none;
+            border: 2px solid var(--card-border);
+            position: relative;
+            box-shadow: 4px 4px 0px var(--shadow-color);
+            cursor: pointer;
+            transition: transform 0.1s ease, box-shadow 0.1s ease;
+        }
+
+        .btn:active {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px var(--shadow-color);
+        }
+
+        .btn-primary {
+            background: var(--btn-primary-bg);
+            color: var(--btn-primary-text);
+        }
+
+        /* Брутальные Тосты */
+        .toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 14px 24px;
+            font-weight: 800;
+            font-size: 14px;
+            text-transform: uppercase;
+            border: 3px solid #000;
+            z-index: 9999;
+            display: none;
+            box-shadow: 4px 4px 0px var(--shadow-color);
+            text-align: center;
+            white-space: nowrap;
+        }
+        .toast.show { display: block; }
+        .toast.error { background: var(--admin-red); color: #fff; }
+        .toast.success { background: var(--success-green); color: #fff; }
+
+        /* Модальное окно */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(11, 15, 23, 0.85);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 24px;
+        }
+
+        .modal {
+            background: var(--card-bg);
+            width: 100%;
+            max-width: 340px;
+            padding: 24px;
+            border: 3px solid var(--card-border);
+            position: relative;
+            box-shadow: 8px 8px 0px var(--shadow-color);
+        }
         
-        .stars-row { color: var(--star-color); margin-bottom: 12px; font-size: 1.1rem; letter-spacing: 2px; position: relative; z-index: 1; }
-        .review-text { font-size: 1rem; line-height: 1.5; color: #cbd5e1; margin-bottom: 15px; word-wrap: break-word; position: relative; z-index: 1; }
+        .close-modal {
+            position: absolute;
+            top: 12px;
+            right: 16px;
+            font-size: 28px;
+            font-weight: 900;
+            color: var(--text-sub);
+            cursor: pointer;
+            line-height: 1;
+        }
 
-        .read-more-btn { background: none; border: none; color: var(--accent); font-family: 'Inter', sans-serif; font-size: 0.9rem; cursor: pointer; padding: 0; margin-top: -10px; margin-bottom: 15px; display: block; text-decoration: underline; touch-action: manipulation; position: relative; z-index: 2; transition: 0.2s; }
-        .read-more-btn:hover { color: #fff; }
-
-        .user-meta { display: flex; align-items: center; gap: 12px; position: relative; z-index: 1; }
-        .avatar { width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, #00d2ff, #3a7bd5); display: grid; place-items: center; font-family: 'Unbounded'; font-weight: 700; font-size: 0.7rem; color: #000; }
-        .username { font-weight: 700; color: #fff; font-size: 0.9rem; display: flex; flex-direction: column; }
-        .review-date { font-size: 0.7rem; color: var(--text-dim); font-weight: 400; margin-top: 2px; }
-
-        .admin-reply { margin-top: 15px; padding: 15px; background: rgba(255, 77, 77, 0.05); border-left: 3px solid var(--admin-red); border-radius: 0 15px 15px 0; position: relative; z-index: 1; }
-        .admin-tag { font-family: 'Unbounded'; font-size: 0.55rem; color: var(--admin-red); text-transform: uppercase; margin-bottom: 5px; display: block; font-weight: 700; }
-        .admin-text { font-size: 0.9rem; color: #cbd5e1; line-height: 1.4; }
-
-        .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); padding: 16px 30px; border-radius: 50px; font-weight: 500; font-size: 0.9rem; z-index: 9999; display: none; justify-content: center; align-items: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); white-space: nowrap; min-width: 250px; pointer-events: none; }
-        .toast.show { display: flex; animation: fadeIn 0.3s; }
-        .toast.error { background: var(--admin-red); color: white; }
-        .toast.success { background: var(--success-green); color: white; }
-
-        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); display: none; justify-content: center; align-items: center; z-index: 1000; backdrop-filter: blur(10px); padding: 20px; }
-        .modal { background: #0d1117; width: 100%; max-width: 400px; padding: 30px; border-radius: 35px; border: 1px solid var(--glass-border); position: relative; animation: slideUp 0.4s ease-out; }
+        .star-selection-area {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .rating-num {
+            font-size: 16px;
+            font-weight: 900;
+            color: var(--text-title);
+            margin-bottom: 10px;
+            display: block;
+        }
+        .star-picker {
+            display: flex;
+            gap: 6px;
+            justify-content: center;
+        }
         
-        .close-modal { position: absolute; top: 20px; right: 25px; font-size: 2rem; color: var(--text-dim); cursor: pointer; transition: 0.3s; line-height: 1; }
-        .close-modal:hover { color: var(--accent); transform: rotate(90deg); }
+        /* Стилизация SVG внутри пикера */
+        .star-picker .brutal-star {
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+            transition: transform 0.1s ease;
+        }
+        .star-picker .brutal-star:hover {
+            transform: scale(1.15);
+        }
 
-        .star-selection-area { text-align: center; margin-bottom: 25px; }
-        .rating-num { font-family: 'Unbounded'; font-size: 1.2rem; color: var(--accent); margin-bottom: 10px; display: block; }
-        .star-picker { display: flex; gap: 5px; justify-content: center; touch-action: manipulation; }
-        .star-picker span { font-size: 2.8rem; cursor: pointer; color: #1e293b; transition: 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); padding: 0 5px; }
-        .star-picker span.active { color: var(--star-color); transform: scale(1.1); }
-        .star-picker span:hover { transform: scale(1.25); color: var(--star-color); }
-
-        input, textarea { width: 100%; background: #161b22; border: 1px solid #30363d; padding: 16px; border-radius: 15px; color: #fff; margin-bottom: 15px; outline: none; font-family: 'Inter'; font-size: 16px; transition: 0.3s; }
-        input:focus, textarea:focus { border-color: var(--accent); background: #1c2128; box-shadow: 0 0 10px rgba(0, 210, 255, 0.1); }
-        .submit-btn { width: 100%; padding: 18px; border-radius: 15px; background: var(--accent); border: none; color: #000 !important; font-family: 'Unbounded'; font-weight: 400; cursor: pointer; touch-action: manipulation; transition: 0.3s; }
-        .submit-btn:hover { background: #fff; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0, 210, 255, 0.3); }
+        /* Инпуты */
+        input, textarea {
+            width: 100%;
+            background: var(--input-bg);
+            border: 2px solid var(--card-border);
+            padding: 12px;
+            color: var(--text-body);
+            margin-bottom: 14px;
+            outline: none;
+            font-size: 15px;
+            border-radius: 0px;
+        }
+        input:focus, textarea:focus {
+            border-color: var(--btn-primary-bg);
+        }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
+    <div class="theme-container">
+        <input type="checkbox" id="themeInput" class="theme-checkbox">
+        <label for="themeInput" class="theme-switch">
+            <svg class="switch-icon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+            <div class="theme-handle"></div>
+            <svg class="switch-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </label>
+    </div>
+
     <div id="toast" class="toast"></div>
-    <div class="mesh-gradient"></div>
 
     <div class="container">
-        <header class="hero">
-            <h1>ON1X VPN<span> Отзывы</span></h1>
+        <header class="brand-header">
+            <h1 class="brand-title">ON1X VPN</h1>
+            <p class="brand-slogan">Отзывы</p>
         </header>
 
         <div class="stats-container">
@@ -147,9 +497,9 @@
             <div class="stat-card"><h2 id="totalCount">0</h2><p>Отзывов</p></div>
         </div>
 
-        <div class="cta-block">
-            <p>Оставьте свой отзыв, который поможет нам стать лучше</p>
-            <button class="cta-btn" id="addBtn">Оставить отзыв</button>
+        <div class="section-box" style="text-align: center; gap: 18px;">
+            <p style="font-size: 14px; font-weight: 600; color: var(--text-sub);">Ваше мнение помогает проекту ON1X становиться мощнее.</p>
+            <button class="btn btn-primary" id="addBtn">ОСТАВИТЬ ОТЗЫВ</button>
         </div>
 
         <div class="reviews-grid" id="grid"></div>
@@ -158,33 +508,74 @@
     <div class="modal-overlay" id="overlay">
         <div class="modal">
             <span class="close-modal" id="closeBtn">&times;</span>
-            <h2 style="font-family: 'Unbounded'; text-align: center; margin-bottom: 15px; font-size: 1rem; font-weight: 400; color: #fff;">ВАША ОЦЕНКА</h2>
+            <h2 style="font-size: 14px; font-weight: 900; text-align: center; margin-bottom: 12px; text-transform: uppercase; color: var(--text-title);">Ваша оценка</h2>
+            
             <div class="star-selection-area">
                 <span class="rating-num" id="ratingDisplay">5 / 5</span>
                 <div class="star-picker" id="starPicker">
-                    <span data-v="1">★</span><span data-v="2">★</span><span data-v="3">★</span><span data-v="4">★</span><span data-v="5">★</span>
-                </div>
+                    </div>
             </div>
+            
             <input type="text" id="nameInp" placeholder="Ваше имя" autocomplete="off">
             <input type="text" id="contactInp" placeholder="ID или @username (необязательно)" autocomplete="off">
-            <textarea id="msgInp" rows="4" placeholder="Напишите ваш отзыв"></textarea>
-            <button class="submit-btn" id="saveBtn">Опубликовать</button>
+            <textarea id="msgInp" rows="4" placeholder="Напишите ваш отзыв..."></textarea>
+            <button class="btn btn-primary" id="saveBtn">ОПУБЛИКОВАТЬ</button>
         </div>
     </div>
 
     <script>
+        // Функция генерации брутальной SVG звезды
+        function getStarSvg(isFilled) {
+            return `
+                <svg class="brutal-star ${isFilled ? 'filled' : 'empty'}" viewBox="0 0 24 24">
+                    <path d="M12 1.7l3.09 6.26L22 8.9l-5 4.87L18.18 22 12 18.75 5.82 22 7 13.77 2 8.9l6.91-.94L12 1.7z"/>
+                </svg>
+            `;
+        }
+
+        function getStarsRowHtml(starsCount) {
+            let html = '';
+            for (let i = 1; i <= 5; i++) {
+                html += getStarSvg(i <= starsCount);
+            }
+            return html;
+        }
+
+        // Логика тем
+        const themeInput = document.getElementById('themeInput');
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        if (savedTheme === 'light') {
+            document.documentElement.setAttribute('data-theme', 'light');
+            themeInput.checked = true;
+        } else {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            themeInput.checked = false;
+        }
+
+        themeInput.addEventListener('change', () => {
+            if (themeInput.checked) {
+                document.documentElement.setAttribute('data-theme', 'light');
+                localStorage.setItem('theme', 'light');
+            } else {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+
+        // Supabase
         const SB_URL = 'https://yvnnngfzzjdbeiscwluy.supabase.co';
         const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl2bm5uZ2Z6empkYmVpc2N3bHV5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0NzY2ODYsImV4cCI6MjA5MDA1MjY4Nn0.SesGG2QhbJKfAklZDiL8oolWQ6qaTtBwRL_tvigpd9A';
         const supabaseClient = supabase.createClient(SB_URL, SB_KEY);
-
+        
         const grid = document.getElementById('grid');
         const overlay = document.getElementById('overlay');
         const closeBtn = document.getElementById('closeBtn');
         const toast = document.getElementById('toast');
         const ratingDisplay = document.getElementById('ratingDisplay');
+        const starPicker = document.getElementById('starPicker');
         let currentStars = 5;
 
-        // Защита
+        // Защита исходного кода
         document.addEventListener('contextmenu', e => e.preventDefault());
         document.addEventListener('keydown', e => {
             if (e.ctrlKey && (e.keyCode === 67 || e.keyCode === 85 || e.keyCode === 83 || e.keyCode === 80)) e.preventDefault();
@@ -210,22 +601,23 @@
         closeBtn.addEventListener('pointerdown', closeModal);
         overlay.addEventListener('pointerdown', (e) => { if(e.target === overlay) closeModal(); });
 
-        const pickerStars = document.querySelectorAll('#starPicker span');
-        pickerStars.forEach(s => {
-            s.addEventListener('pointerdown', (e) => {
-                e.preventDefault();
-                currentStars = parseInt(s.dataset.v);
-                updatePicker();
-            });
-        });
-
-        function updatePicker() {
-            pickerStars.forEach(s => s.classList.toggle('active', s.dataset.v <= currentStars));
+        // Инициализация пикера
+        function initPicker() {
+            starPicker.innerHTML = Array.from({length: 5}, (_, i) => getStarSvg(i < currentStars)).join('');
             ratingDisplay.innerText = `${currentStars} / 5`;
+            
+            const pickerStars = starPicker.querySelectorAll('.brutal-star');
+            pickerStars.forEach((s, idx) => {
+                s.addEventListener('pointerdown', (e) => {
+                    e.preventDefault();
+                    currentStars = idx + 1;
+                    initPicker();
+                });
+            });
         }
-        updatePicker();
+        initPicker();
 
-        // Загрузка из кэша для мгновенного отображения на мобильных
+        // Быстрый рендер из кэша
         const cached = localStorage.getItem('reviews_cache');
         if (cached) render(JSON.parse(cached));
 
@@ -236,7 +628,6 @@
                     .select('id, name, msg, stars, created_at, admin, proverka')
                     .in('proverka', [1, 2])
                     .order('created_at', { ascending: false });
-                
                 if (!error && reviews) {
                     localStorage.setItem('reviews_cache', JSON.stringify(reviews));
                     render(reviews);
@@ -246,7 +637,7 @@
 
         function render(data) {
             if (!data) return;
-            grid.innerHTML = data.map((r, i) => {
+            grid.innerHTML = data.map((r) => {
                 const isLong = r.msg.length > 200;
                 const displayMsg = isLong ? r.msg.substring(0, 200) + '...' : r.msg;
                 
@@ -257,10 +648,11 @@
                 const fullDate = `${day}.${month}.${year}`;
 
                 return `
-                <div class="card" style="animation-delay: ${i * 0.05}s">
-                    <div class="stars-row">${'★'.repeat(r.stars)}${'☆'.repeat(5-r.stars)}</div>
+                <div class="section-box">
+                    <div class="stars-row">${getStarsRowHtml(r.stars)}</div>
                     <p class="review-text" id="text-${r.id}">${displayMsg}</p>
                     ${isLong ? `<button class="read-more-btn" data-full="${r.msg.replace(/"/g, '&quot;')}" onclick="expandText(this, '${r.id}')">Читать полностью</button>` : ''}
+                    
                     <div class="user-meta">
                         <div class="avatar">${r.name ? r.name[0].toUpperCase() : '?'}</div>
                         <div class="username">
