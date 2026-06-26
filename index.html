@@ -470,7 +470,36 @@
         input:focus, textarea:focus {
             border-color: var(--btn-primary-bg);
         }
+
+        input[readonly] {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .source-badge {
+            display: inline-block;
+            font-size: 10px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 2px 8px;
+            border: 2px solid #000000;
+            position: absolute;
+            top: -2px;
+            right: -2px;
+        }
+
+        .source-badge.telegram {
+            background: #0088cc;
+            color: #ffffff;
+        }
+
+        .source-badge.website {
+            background: var(--btn-primary-bg);
+            color: var(--btn-primary-text);
+        }
     </style>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
@@ -594,7 +623,20 @@
             btn.remove();
         };
 
-        const openModal = () => { overlay.style.display = 'flex'; };
+        const openModal = () => {
+            overlay.style.display = 'flex';
+            const tgUser = window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe && window.Telegram.WebApp.initDataUnsafe.user;
+            const contactInp = document.getElementById('contactInp');
+            if (tgUser && tgUser.id) {
+                contactInp.value = String(tgUser.id);
+                contactInp.setAttribute('readonly', 'true');
+                contactInp.setAttribute('placeholder', 'Telegram ID (определён автоматически)');
+            } else {
+                contactInp.value = '';
+                contactInp.removeAttribute('readonly');
+                contactInp.setAttribute('placeholder', 'ID или @username (необязательно)');
+            }
+        };
         const closeModal = () => { overlay.style.display = 'none'; };
 
         document.getElementById('addBtn').addEventListener('pointerdown', openModal);
@@ -625,7 +667,7 @@
             try {
                 let { data: reviews, error } = await supabaseClient
                     .from('reviews')
-                    .select('id, name, msg, stars, created_at, admin, proverka')
+                    .select('id, name, msg, stars, created_at, admin, proverka, source')
                     .in('proverka', [1, 2])
                     .order('created_at', { ascending: false });
                 if (!error && reviews) {
@@ -653,6 +695,7 @@
                     <p class="review-text" id="text-${r.id}">${displayMsg}</p>
                     ${isLong ? `<button class="read-more-btn" data-full="${r.msg.replace(/"/g, '&quot;')}" onclick="expandText(this, '${r.id}')">Читать полностью</button>` : ''}
                     
+                    ${r.source ? `<span class="source-badge ${r.source === 'telegram' ? 'telegram' : 'website'}">${r.source === 'telegram' ? 'Telegram' : 'Сайт'}</span>` : ''}
                     <div class="user-meta">
                         <div class="avatar">${r.name ? r.name[0].toUpperCase() : '?'}</div>
                         <div class="username">
@@ -684,13 +727,17 @@
             const msg = document.getElementById('msgInp').value.trim();
             
             if(!name || !msg) { showNotification("Заполните все поля", "error"); return; }
+
+            const isTelegram = window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe && window.Telegram.WebApp.initDataUnsafe.user && window.Telegram.WebApp.initDataUnsafe.user.id;
+            const source = isTelegram ? 'telegram' : 'website';
             
             const { error } = await supabaseClient.from('reviews').insert([{ 
                 name, 
                 contact: contact || null, 
                 msg, 
                 stars: currentStars, 
-                proverka: 0 
+                proverka: 0,
+                source: source
             }]);
       
             if (!error) {
